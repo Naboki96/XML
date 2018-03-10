@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Serialization
+namespace XML.BL.Serialization
 {
     public class Serialization : ISerialization
     {
@@ -13,11 +13,11 @@ namespace Serialization
                 using (XmlWriter xmlReader = XmlWriter.Create(filename))
                 {
 
-                    DataContractSerializer ser = new DataContractSerializer(typeof(T), null,
-                        0x7FFF /*maxItemsInObjectGraph*/,
-                        false /*ignoreExtensionDataObject*/,
-                        true /*preserveObjectReferences : this is where the magic happens */,
-                        null /*dataContractSurrogate*/);
+                    DataContractSerializer ser = new DataContractSerializer(type: typeof(T), knownTypes: null,
+                        maxItemsInObjectGraph: 0x7FFF,
+                        ignoreExtensionDataObject: false,
+                        preserveObjectReferences: true,
+                        dataContractSurrogate: null);
                     ser.WriteObject(xmlReader, objectToSave);
                 }
             });
