@@ -106,5 +106,8 @@ namespace XML.Models
         public Autorzy Autorzy { get; set; }
     }
 
+    public class ListaOsób
+    {
+    }
 }
 

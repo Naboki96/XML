@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-namespace Serialization
+namespace XML.BL.Serialization
 {
     [InheritedExport(typeof(ISerialization))]
     public interface ISerialization
