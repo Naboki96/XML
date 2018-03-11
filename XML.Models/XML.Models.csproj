@@ -38,14 +38,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="All.cs" />
-    <Compile Include="Employees.cs" />
+    <Compile Include="Publisher.cs" />
+    <Compile Include="Author.cs" />
+    <Compile Include="AuthorsList.cs" />
+    <Compile Include="GameLibrary.cs" />
+    <Compile Include="GamesList.cs" />
+    <Compile Include="Games.cs" />
+    <Compile Include="Price.cs" />
+    <Compile Include="Producer.cs" />
+    <Compile Include="PublishersList.cs" />
+    <Compile Include="InternationalPublishers.cs" />
+    <Compile Include="Release.cs" />
+    <Compile Include="ReleaseDate.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GamesLibrary\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
