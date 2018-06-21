@@ -523,10 +523,10 @@ namespace XML.View.ViewModel
         private List<GameId> gamesId;
         public List<GameId> GamesId
         {
-            get => GamesId;
+            get => producedGames.GameId;
             set
             {
-                GamesId = value;
+                GamesId = producedGames.GameId;
                 RaisePropertyChanged();
             }
         }
@@ -545,10 +545,10 @@ namespace XML.View.ViewModel
         private List<PublisherId> publisheriId;
         public List<PublisherId> PublisheriId
         {
-            get => PublisheriId;
+            get => Publishers.PublisherId;
             set
             {
-                PublisheriId = value;
+                PublisheriId = Publishers.PublisherId;
                 RaisePropertyChanged();
             }
         }
@@ -628,10 +628,10 @@ namespace XML.View.ViewModel
         private List<GameId> gamesiId;
         public List<GameId> GamesiId
         {
-            get => GamesiId;
+            get => PublishedGames.GameId;
             set
             {
-                GamesiId = value;
+                GamesiId = PublishedGames.GameId;
                 RaisePropertyChanged();
             }
         }
@@ -650,10 +650,10 @@ namespace XML.View.ViewModel
         private List<ProducerId> produceriId;
         public List<ProducerId> ProduceriId
         {
-            get => ProduceriId;
+            get => Producers.ProducerId;
             set
             {
-                ProduceriId = value;
+                ProduceriId = Producers.ProducerId;
                 RaisePropertyChanged();
             }
         }
