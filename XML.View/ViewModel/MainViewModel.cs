@@ -12,7 +12,11 @@ namespace XML.View.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public List<Tuple<string, XmlType, object>> GameLiberaryData = new List<Tuple<string, XmlType, object>>();
+        public Authors AuthorsList = new Authors();
+        public GameList GamesList = new GameList();
+        public ModificationsList Modifications = new ModificationsList();
+        public ProducerList ProducersList = new ProducerList();
+        public PublisherList PublishersList = new PublisherList();
 
         public MainViewModel()
         {
@@ -26,28 +30,12 @@ namespace XML.View.ViewModel
             GameLibrary data = deserializer.Deserialize(reader) as GameLibrary;
             reader.Close();
 
-            GameLiberaryData.AddRange(
-                data.Authors.Author.Select(
-                    author => new Tuple<string, XmlType, object>(author.AuthorName + author.Surname, XmlType.Author, author)));
-
-            GameLiberaryData.AddRange(
-                data.GameList.Game.Select(
-                    game => new Tuple<string, XmlType, object>(game.Title, XmlType.Game, game)));
-
-            GameLiberaryData.AddRange(
-                data.ModificationsList.Modification.Select(
-                    modification => new Tuple<string, XmlType, object>(modification.AuthorId, XmlType.Modification, modification)));
-
-            GameLiberaryData.AddRange(
-                data.ProducerList.Producer.Select(
-                    producer => new Tuple<string, XmlType, object>(producer.ProducerName, XmlType.Modification, producer)));
-
-            GameLiberaryData.AddRange(
-                data.PublisherList.Publisher.Select(
-                    publisher => new Tuple<string, XmlType, object>(publisher.PublisherName, XmlType.Modification, publisher)));
+            AuthorsList = data.Authors;
+            GamesList = data.GameList;
+            Modifications = data.ModificationsList;
+            ProducersList = data.ProducerList;
+            PublishersList = data.PublisherList;
         });
-
-        public string[] Items => GameLiberaryData.Select(tuple => tuple.Item1).ToArray();
 
     }
 
