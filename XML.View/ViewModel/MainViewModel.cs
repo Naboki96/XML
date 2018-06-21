@@ -8,6 +8,9 @@ using System.Xml.Serialization;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Xml2CSharp;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace XML.View.ViewModel
 {
@@ -91,6 +94,16 @@ namespace XML.View.ViewModel
             ProducersList = data.ProducerList;
             PublishersList = data.PublisherList;
         });
+
+        public void CreatePDF(object obj)
+        {
+            Document doc = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
+            PdfWriter writ = PdfWriter.GetInstance(doc, new FileStream("PDF.pdf", FileMode.Create));
+            doc.Open();
+            Paragraph paragraph = new Paragraph();
+            doc.Add(paragraph);
+            doc.Close();
+        }
 
         #region Authors
 
