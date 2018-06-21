@@ -8,14 +8,14 @@ namespace XML.Models
     public class GameLibrary
     {
         [XmlElement(ElementName = "Authors")]
-        public ArrayList Authors = new ArrayList();
+        public List<Author> Authors { get; set; }
         [XmlElement(ElementName = "ModificationsList")]
-        public ArrayList ModificationsList = new ArrayList();
+        public List<Modification> ModificationsList { get; set; }
         [XmlElement(ElementName = "GameList")]
-        public ArrayList GameList = new ArrayList();
+        public List<Game> GameList { get; set; }
         [XmlElement(ElementName = "ProducerList")]
-        public ArrayList ProducerList = new ArrayList();
+        public List<Producer> ProducerList { get; set; }
         [XmlElement(ElementName = "PublisherList")]
-        public ArrayList PublisherList = new ArrayList();
+        public List<Publisher> PublisherList { get; set; }
     }
 }

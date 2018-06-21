@@ -9,6 +9,6 @@ namespace XML.Models
         [XmlAttribute(AttributeName = "Currency")]
         public String Currency { get; set; }
         [XmlText]
-        public double valaue { get; set; }
+        public double Valaue { get; set; }
     }
 }

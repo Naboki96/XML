@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace XML.Models
 {
@@ -9,9 +10,9 @@ namespace XML.Models
         [XmlElement(ElementName = "ProducerName")]
         public string ProducerName { get; set; }
         [XmlElement(ElementName = "ProducedGames")]
-        public ProducedGames ProducedGames { get; set; }
+        public List<Game> ProducedGames { get; set; }
         [XmlElement(ElementName = "Publishers")]
-        public Publishers Publishers { get; set; }
+        public List<Publisher> Publishers { get; set; }
         [XmlAttribute(AttributeName = "ProducerId")]
         public string ProducerId { get; set; }
     }
