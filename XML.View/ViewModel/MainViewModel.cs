@@ -269,8 +269,6 @@ namespace XML.View.ViewModel
 
         #region Modifications
 
-        private Visibility modificationsEnabled;
-
         public RelayCommand ManageModificationsCommand => new RelayCommand(() =>
         {
             Visibility valueToSet = Visibility.Collapsed;
@@ -364,10 +362,10 @@ namespace XML.View.ViewModel
         private string modificationDate;
         public string ModificationDate
         {
-            get => ModificationDate;
+            get => modificationDate;
             set
             {
-                ModificationDate = value;
+                modificationDate = value;
                 RaisePropertyChanged();
             }
         }
@@ -375,10 +373,10 @@ namespace XML.View.ViewModel
         private string note;
         public string Note
         {
-            get => Note;
+            get => note;
             set
             {
-                Note = value;
+                note = value;
                 RaisePropertyChanged();
             }
         }
@@ -386,10 +384,10 @@ namespace XML.View.ViewModel
         private string authorId;
         public string AuthorId
         {
-            get => AuthorId;
+            get => authorId;
             set
             {
-                AuthorId = value;
+                authorId = value;
                 RaisePropertyChanged();
             }
         }
@@ -430,8 +428,6 @@ namespace XML.View.ViewModel
 
         #region Games
 
-        private Visibility gamesEnabled;
-
         public RelayCommand ManageGamesCommand => new RelayCommand(() =>
         {
             Visibility valueToSet = Visibility.Collapsed;
@@ -454,22 +450,22 @@ namespace XML.View.ViewModel
         });
         public RelayCommand AddGameCommand => new RelayCommand(() =>
         {
-            if (string.IsNullOrEmpty(Image) ||
-                string.IsNullOrEmpty(Title) ||
-                string.IsNullOrEmpty(ProductKey) ||
-                string.IsNullOrEmpty(AgeRating) ||
-                string.IsNullOrEmpty(ReleaseDate) ||
-                string.IsNullOrEmpty(Description) ||
+            if (string.IsNullOrEmpty(GameImage) ||
+                string.IsNullOrEmpty(GameTitle) ||
+                string.IsNullOrEmpty(GameProductKey) ||
+                string.IsNullOrEmpty(GameAgeRating) ||
+                string.IsNullOrEmpty(GameReleaseDate) ||
+                string.IsNullOrEmpty(GameDescription) ||
                 string.IsNullOrEmpty(GameId) ||
-                string.IsNullOrEmpty(Genre) ||
-                string.IsNullOrEmpty(Curency) ||
-                string.IsNullOrEmpty(Text) ||
-                string.IsNullOrEmpty(Idref) ||
-                string.IsNullOrEmpty(IIdref) ||
-                string.IsNullOrEmpty(TimePlayed) ||
-                string.IsNullOrEmpty(LastSessionDate) ||
-                string.IsNullOrEmpty(Completed) ||
-                string.IsNullOrEmpty(Count))
+                string.IsNullOrEmpty(GameGenre) ||
+                string.IsNullOrEmpty(GamePriceCurency) ||
+                string.IsNullOrEmpty(GamePriceValue) ||
+                string.IsNullOrEmpty(GameProducerIdref) ||
+                string.IsNullOrEmpty(GamePublisherIdref) ||
+                string.IsNullOrEmpty(GameStatisticsTimePlayed) ||
+                string.IsNullOrEmpty(GameStatisticsLastSessionDate) ||
+                string.IsNullOrEmpty(GameAchievementsCompleted) ||
+                string.IsNullOrEmpty(GameAchievementsCount))
             {
                 MessageBox.Show("Missing data to add new Game", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -478,119 +474,112 @@ namespace XML.View.ViewModel
                 var output = GamesList.ToList();
                 output.Add(new Game
                 {
-                    Image = Image,
-                    Title = Title,
-                    ProductKey = ProductKey,
-                    AgeRating = AgeRating,
-                    ReleaseDate = ReleaseDate,
-                    Description = Description,
+                    Image = GameImage,
+                    Title = GameTitle,
+                    ProductKey = GameProductKey,
+                    AgeRating = GameAgeRating,
+                    ReleaseDate = GameReleaseDate,
+                    Description = GameDescription,
                     GameId = GameId,
-                    Genre = Genre,
-                    Price = Price,
-                    ProducerId = ProducerId,
-                    PublisherId = PublisherId,
-                    Statistics = Statistics
+                    Genre = GameGenre,
+                    Price = new Price{Curency = GamePriceCurency, Text = GamePriceValue},
+                    ProducerId = new ProducerId{Idref = GameProducerIdref},
+                    PublisherId = new PublisherId{Idref = GamePublisherIdref},
+                    Statistics = new Statistics
+                    {
+                        Achievements = new Achievements { Completed = GameAchievementsCompleted, Count = GameAchievementsCount},
+                        LastSessionDate = GameStatisticsLastSessionDate, TimePlayed = gameStatisticsTimePlayed
+                    }
                 });
                 GamesList = new ObservableCollection<Game>(output);
                 MessageBox.Show("Game added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         });
 
-        private string image;
-        public string Image
+        private string gameImage;
+        public string GameImage
         {
-            get => Image;
+            get => gameImage;
             set
             {
-                Image = value;
+                gameImage = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string title;
-        public string Title
+        private string gameTitle;
+        public string GameTitle
         {
-            get => Title;
+            get => gameTitle;
             set
             {
-                Title = value;
+                gameTitle = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string productKey;
-        public string ProductKey
+        private string gameProductKey;
+        public string GameProductKey
         {
-            get => ProductKey;
+            get => gameProductKey;
             set
             {
-                ProductKey = value;
+                gameProductKey = value;
                 RaisePropertyChanged();
             }
         }
 
-        private Price price;
-        public Price Price
+        private string gamePriceCurency;
+        public string GamePriceCurency
         {
-            get => Price;
+            get => gamePriceCurency;
             set
             {
-                Price = value;
+                gamePriceCurency = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string curency;
-        public string Curency
+        private string gamePriceValue;
+        public string GamePriceValue
         {
-            get => Price.Curency;
+            get => gamePriceValue;
             set
             {
-                Curency = Price.Curency;
+                gamePriceValue = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string text;
-        public string Text
+        private string gameAgeRating;
+        public string GameAgeRating
         {
-            get => Price.Text;
+            get => gameAgeRating;
             set
             {
-                Text = Price.Text;
+                gameAgeRating = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string ageRating;
-        public string AgeRating
+        private string gameReleaseDate;
+        public string GameReleaseDate
         {
-            get => AgeRating;
+            get => gameReleaseDate;
             set
             {
-                AgeRating = value;
+                gameReleaseDate = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string releaseDate;
-        public string ReleaseDate
+        private string gameDescription;
+        public string GameDescription
         {
-            get => ReleaseDate;
+            get => gameDescription;
             set
             {
-                ReleaseDate = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string description;
-        public string Description
-        {
-            get => Description;
-            set
-            {
-                Description = value;
+                gameDescription = value;
                 RaisePropertyChanged();
             }
         }
@@ -598,135 +587,92 @@ namespace XML.View.ViewModel
         private string gameId;
         public string GameId
         {
-            get => GameId;
+            get => gameId;
             set
             {
-                GameId = value;
+                gameId = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string genre;
-        public string Genre
+        private string gameGenre;
+        public string GameGenre
         {
-            get => Genre;
+            get => gameGenre;
             set
             {
-                Genre = value;
+                gameGenre = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ProducerId producerId;
-        public ProducerId ProducerId
+        private string gameProducerIdref;
+        public string GameProducerIdref
         {
-            get => ProducerId;
+            get => gameProducerIdref;
             set
             {
-                ProducerId = value;
+                gameProducerIdref = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string idref;
-        public string Idref
+        private string gamePublisherIdref;
+        public string GamePublisherIdref
         {
-            get => ProducerId.Idref;
+            get => gamePublisherIdref;
             set
             {
-                Idref = producerId.Idref;
+                gamePublisherIdref = value;
                 RaisePropertyChanged();
             }
         }
 
-        private PublisherId publisherId;
-        public PublisherId PublisherId
+        private string gameStatisticsTimePlayed;
+        public string GameStatisticsTimePlayed
         {
-            get => PublisherId;
+            get => gameStatisticsTimePlayed;
             set
             {
-                PublisherId = value;
+                gameStatisticsTimePlayed = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string iIdref;
-        public string IIdref
+        private string gameStatisticsLastSessionDate;
+        public string GameStatisticsLastSessionDate
         {
-            get => PublisherId.Idref;
+            get => gameStatisticsLastSessionDate;
             set
             {
-                IIdref = publisherId.Idref;
+                gameStatisticsLastSessionDate = value;
                 RaisePropertyChanged();
             }
         }
 
-        private Statistics statistics;
-        public Statistics Statistics
+        private string gameAchievementsCompleted;
+        public string GameAchievementsCompleted
         {
-            get => Statistics;
+            get => gameAchievementsCompleted;
             set
             {
-                Statistics = value;
+                gameAchievementsCompleted = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string timePlayed;
-        public string TimePlayed
+        private string gameAchievementsCount;
+        public string GameAchievementsCount
         {
-            get => statistics.TimePlayed;
+            get => gameAchievementsCount;
             set
             {
-                TimePlayed = statistics.TimePlayed;
+                gameAchievementsCount = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string lastSessionDate;
-        public string LastSessionDate
-        {
-            get => Statistics.LastSessionDate;
-            set
-            {
-                LastSessionDate = statistics.LastSessionDate;
-                RaisePropertyChanged();
-            }
-        }
-
-        private Achievements achievements;
-        public Achievements Achievements
-        {
-            get => Achievements;
-            set
-            {
-                Achievements = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string completed;
-        public string Completed
-        {
-            get => Achievements.Completed;
-            set
-            {
-                Completed = Achievements.Completed;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string count;
-        public string Count
-        {
-            get => Achievements.Count;
-            set
-            {
-                Count = Achievements.Count;
-                RaisePropertyChanged();
-            }
-        }
-
+        private Visibility gamesEnabled;
         public Visibility GamesEnabled
         {
             get => gamesEnabled;
