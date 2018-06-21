@@ -359,16 +359,7 @@ namespace XML.View.ViewModel
             }
         });
 
-        private string modificationDate;
-        public string ModificationDate
-        {
-            get => modificationDate;
-            set
-            {
-                modificationDate = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string ModificationDate => DateTime.Now.ToString("yyyy-MM-dd");
 
         private string note;
         public string Note
