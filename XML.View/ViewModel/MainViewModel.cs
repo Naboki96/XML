@@ -277,6 +277,26 @@ namespace XML.View.ViewModel
         //    get => new[] { "123", "321" };
         //}
 
+        public RelayCommand AddModificationCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(ModificationDate) ||
+                string.IsNullOrEmpty(Note) ||
+                string.IsNullOrEmpty(AuthorId))
+            {
+                MessageBox.Show("Missing data to add new Modification", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                Modifications.Modification.Add(new Modification
+                {
+                    ModificationDate = ModificationDate,
+                    Note = Note,
+                    AuthorId = AuthorId
+                });
+                MessageBox.Show("Modification added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
+
         public Visibility ModificationsEnabled
         {
             get => modificationsEnabled;
@@ -545,6 +565,47 @@ namespace XML.View.ViewModel
             }
         }
 
+        public RelayCommand AddGameCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(Image) ||
+                string.IsNullOrEmpty(Title) ||
+                string.IsNullOrEmpty(ProductKey) ||
+                string.IsNullOrEmpty(AgeRating) ||
+                string.IsNullOrEmpty(ReleaseDate) ||
+                string.IsNullOrEmpty(Description) ||
+                string.IsNullOrEmpty(GameId) ||
+                string.IsNullOrEmpty(Genre) ||
+                string.IsNullOrEmpty(Curency) ||
+                string.IsNullOrEmpty(Text) ||
+                string.IsNullOrEmpty(Idref) ||
+                string.IsNullOrEmpty(IIdref)||
+                string.IsNullOrEmpty(TimePlayed) ||
+                string.IsNullOrEmpty(LastSessionDate) ||
+                string.IsNullOrEmpty(Completed) ||
+                string.IsNullOrEmpty(Count) )
+            {
+                MessageBox.Show("Missing data to add new Game", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                GamesList.Game.Add(new Game
+                {
+                    Image = Image,
+                    Title = Title,
+                    ProductKey = ProductKey,
+                    AgeRating = AgeRating,
+                    ReleaseDate = ReleaseDate,
+                    Description = Description,
+                    GameId = GameId,
+                    Genre = Genre,
+                    Price = Price,
+                    ProducerId = ProducerId,
+                    PublisherId = PublisherId,
+                    Statistics = Statistics
+                });
+                MessageBox.Show("Game added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
 
         public Visibility GamesEnabled
         {
@@ -650,7 +711,27 @@ namespace XML.View.ViewModel
             }
         }
 
-
+        public RelayCommand AddProducerCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(ProducerName) ||
+                string.IsNullOrEmpty(ProducersId) ||
+                !GamesId.Any() ||
+                !PublisheriId.Any())
+            {
+                MessageBox.Show("Missing data to add new Producer", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                ProducersList.Producer.Add(new Producer
+                {
+                    ProducerName = ProducerName,
+                    ProducerId = ProducersId,
+                    ProducedGames = ProducedGames,
+                    Publishers = Publishers
+                });
+                MessageBox.Show("Producer added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
 
         public Visibility ProducersEnabled
         {
@@ -754,6 +835,28 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        public RelayCommand AddPublisherCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(PublisherName) ||
+                string.IsNullOrEmpty(PublishersId) ||
+                !GamesId.Any() ||
+                !ProduceriId.Any())
+            {
+                MessageBox.Show("Missing data to add new Publisher", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                PublishersList.Publisher.Add(new Publisher
+                {
+                    PublisherName = PublisherName,
+                    PublisherId = PublishersId,
+                    PublishedGames = PublishedGames,
+                    Producers = Producers
+                });
+                MessageBox.Show("Publisher added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
 
         public Visibility PublishersEnabled
         {
