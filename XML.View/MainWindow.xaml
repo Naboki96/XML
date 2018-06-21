@@ -20,11 +20,68 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView ItemsSource="{Binding Items}">
+        <ListView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                  Margin="10"
+                  ItemsSource="{Binding Items}"/>
 
-        </ListView>
+        <StackPanel Grid.Column="1" Grid.Row="0"
+                    Margin="10,10,10,5"
+                    Orientation="Horizontal">
+            <Button Content="Manage Authors" Command="{Binding ManageAuthorsCommand}"
+                    Margin="0,0,5,0" Height="30"
+                    FontSize="15"/>
+            <Button Content="Manage Modifications" Command="{Binding ManageModificationsCommand}"
+                    Margin="5,0,5,0" Height="30"
+                    FontSize="15"/>
+            <Button Content="Manage Games" Command="{Binding ManageGamesCommand}"
+                    Margin="5,0,5,0" Height="30"
+                    FontSize="15"/>
+            <Button Content="Manage Publishers" Command="{Binding ManagePublishersCommand}"
+                    Margin="5,0,5,0" Height="30"
+                    FontSize="15"/>
+            <Button Content="Manage Producers" Command="{Binding ManageProducersCommand}"
+                    Margin="5,0,0,0" Height="30"
+                    FontSize="15"/>
+        </StackPanel>
 
-        <Button Grid.Row="1" Grid.Column="1" Content="kuuurwa"  Command="{Binding Deserialize}"></Button>
+        <StackPanel Grid.Column="1" Grid.Row="1"
+                    Margin="10,5,10,5"
+                    Orientation="Vertical"
+                    Visibility="{Binding AuthorsEnabled}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="Add Author" Command="{Binding AddAuthorCommand}"
+                        Margin="0,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Delete Author" Command="{Binding DeleteAuthorCommand}"
+                        Margin="5,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Modify Author" Command="{Binding ModifyAuthorCommand}"
+                        Margin="5,0" Height="30"
+                        FontSize="15"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="Name: " Height="30"
+                           FontSize="15"/>
+                <TextBox Text="{Binding AuthorName, Mode=TwoWay}" Height="30"
+                         FontSize="15"/>
+                <TextBlock Text="Surname: " Margin="10,0" Height="30"
+                           FontSize="15"/>
+                <TextBox Text="{Binding AuthorSurname, Mode=TwoWay}" Height="30"
+                         FontSize="15"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Index: " Height="30"
+                           FontSize="15"/>
+                <TextBox Text="{Binding AuthorName, Mode=TwoWay}" Height="30"
+                         FontSize="15"/>
+                <TextBlock Text="ModificationIndex: " ToolTip="Used when modyfying, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <TextBox Text="{Binding AuthorSurname, Mode=TwoWay}" Height="30"
+                         FontSize="15"/>
+            </StackPanel>
+        </StackPanel>
+
+
 
     </Grid>
 </Window>
