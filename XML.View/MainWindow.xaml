@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:XML.View"
         xmlns:viewModels="clr-namespace:XML.View.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="450" Width="910"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
@@ -48,7 +48,8 @@
                     Margin="10,5,10,5"
                     Orientation="Vertical"
                     Visibility="{Binding AuthorsEnabled}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                        Margin="0,0,0,5">
                 <Button Content="Add Author" Command="{Binding AddAuthorCommand}"
                         Margin="0,0,5,0" Height="30"
                         FontSize="15"/>
@@ -59,26 +60,31 @@
                         Margin="5,0" Height="30"
                         FontSize="15"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock Text="Name: " Height="30"
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Get author By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding Indexes}" SelectedItem="{Binding SelectedAuthorIndex}"
+                          Height="30"
+                          FontSize="15"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Index: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding AuthorIndex, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+                <TextBlock Text="Name: " Height="30" Margin="0,0,2.5,0"
                            FontSize="15"/>
                 <TextBox Text="{Binding AuthorName, Mode=TwoWay}" Height="30"
-                         FontSize="15"/>
-                <TextBlock Text="Surname: " Margin="10,0" Height="30"
-                           FontSize="15"/>
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+                <TextBlock Text="Surname: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15" />
                 <TextBox Text="{Binding AuthorSurname, Mode=TwoWay}" Height="30"
-                         FontSize="15"/>
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Index: " Height="30"
-                           FontSize="15"/>
-                <TextBox Text="{Binding AuthorName, Mode=TwoWay}" Height="30"
-                         FontSize="15"/>
-                <TextBlock Text="ModificationIndex: " ToolTip="Used when modyfying, otherwise ommited." Height="30"
-                           FontSize="15"/>
-                <TextBox Text="{Binding AuthorSurname, Mode=TwoWay}" Height="30"
-                         FontSize="15"/>
-            </StackPanel>
+            
+            <ListView ItemsSource="{Binding AuthorsList.Author}"/>
         </StackPanel>
 
 
