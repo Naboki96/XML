@@ -48,6 +48,7 @@
                     Margin="10,5,10,5"
                     Orientation="Vertical"
                     Visibility="{Binding AuthorsEnabled}">
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                         Margin="0,0,0,5">
                 <Button Content="Add Author" Command="{Binding AddAuthorCommand}"
@@ -60,14 +61,15 @@
                         Margin="5,0" Height="30"
                         FontSize="15"/>
             </StackPanel>
+
             <StackPanel Orientation="Horizontal"
                         Margin="0,0,0,5">
                 <TextBlock Text="Get author By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
                            FontSize="15"/>
                 <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedAuthorIndex}"
-                          Height="30"
-                          FontSize="15"/>
+                          Height="30" FontSize="15"/>
             </StackPanel>
+
             <StackPanel Orientation="Horizontal" 
                         Margin="0,0,0,5">
                 <TextBlock Text="Index: " Height="30" Margin="0,0,2.5,0"
@@ -87,7 +89,41 @@
             <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
+        <StackPanel Grid.Column="1" Grid.Row="1"
+                    Margin="10,5,10,5"
+                    Orientation="Vertical"
+                    Visibility="{Binding ModificationsEnabled}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                        Margin="0,0,0,5">
+                <Button Content="Add Author" Command="{Binding AddModificationCommand}"
+                        Margin="0,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Delete Author" Command="{Binding DeleteModificationCommand}"
+                        Margin="5,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Modify Author" Command="{Binding ModifyModificationCommand}"
+                        Margin="5,0" Height="30"
+                        FontSize="15"/>
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Date: " Height="30" Margin="0,0,2.5,0" ToolTip="YYYY-MM-DD"
+                           FontSize="15"/>
+                <TextBox Text="{Binding ModificationDate, Mode=TwoWay}" ToolTip="YYYY-MM-DD" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+                <TextBlock Text="Name: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedAuthorIndex}"
+                          Height="30" FontSize="15"/>
+                <TextBlock Text="Surname: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15" />
+                <TextBox Text="{Binding Note, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
 
     </Grid>
 </Window>
