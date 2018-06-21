@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace XML.Models
 {
@@ -6,8 +7,8 @@ namespace XML.Models
     public class Price
     {
         [XmlAttribute(AttributeName = "Currency")]
-        public string Currency { get; set; }
+        public String Currency { get; set; }
         [XmlText]
-        public string Text { get; set; }
+        public double valaue { get; set; }
     }
 }

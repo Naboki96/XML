@@ -38,18 +38,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievements.cs" />
+    <Compile Include="Modification.cs" />
     <Compile Include="Publisher.cs" />
     <Compile Include="Author.cs" />
-    <Compile Include="AuthorsList.cs" />
     <Compile Include="GameLibrary.cs" />
-    <Compile Include="GamesList.cs" />
     <Compile Include="Games.cs" />
     <Compile Include="Price.cs" />
     <Compile Include="Producer.cs" />
-    <Compile Include="PublishersList.cs" />
-    <Compile Include="InternationalPublishers.cs" />
-    <Compile Include="Release.cs" />
-    <Compile Include="ReleaseDate.cs" />
+    <Compile Include="Date.cs" />
+    <Compile Include="Statistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Xml" />
