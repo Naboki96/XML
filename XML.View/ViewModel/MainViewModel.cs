@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -311,53 +312,53 @@ namespace XML.View.ViewModel
             }
         });
 
-        public RelayCommand DeleteModificationCommand => new RelayCommand(() =>
-        {
-            if (SelectedModificationAuthorId == "None")
-            {
-                MessageBox.Show("Select Author of Modification you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            for (var index = 0; index < Modifications.Count; index++)
-            {
-                if (Modifications[index].AuthorId == SelectedModificationAuthorId)
-                {
-                    List<Modification> output = Modifications.ToList();
-                    output.RemoveAt(index);
-                    Modifications = new ObservableCollection<Modification>(output);
-                    MessageBox.Show("Modification deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-                    RaisePropertyChanged("Indexes");
-                    SelectedModificationAuthorId = Indexes[0];
-                    return;
-                }
-            }
-        });
-        public RelayCommand ModifyModificationCommand => new RelayCommand(() =>
-        {
-            if (SelectedModificationAuthorId == "None")
-            {
-                MessageBox.Show("Select Author of Modification you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            for (var index = 0; index < Modifications.Count; index++)
-            {
-                if (Modifications[index].AuthorId == SelectedModificationAuthorId)
-                {
-                    var output = Modifications.ToList();
-                    output[index] = new Modification()
-                    {
-                        ModificationDate = ModificationDate,
-                        AuthorId = AuthorId,
-                        Note = Note
-                    };
-                    Modifications = new ObservableCollection<Modification>(output);
-                    MessageBox.Show("Modification changed successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-                    RaisePropertyChanged("Indexes");
-                    SelectedModificationAuthorId = Indexes[0];
-                    return;
-                }
-            }
-        });
+        //public RelayCommand DeleteModificationCommand => new RelayCommand(() =>
+        //{
+        //    if (SelectedModificationAuthorId == "None")
+        //    {
+        //        MessageBox.Show("Select Author of Modification you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //        return;
+        //    }
+        //    for (var index = 0; index < Modifications.Count; index++)
+        //    {
+        //        if (Modifications[index].AuthorId == SelectedModificationAuthorId)
+        //        {
+        //            List<Modification> output = Modifications.ToList();
+        //            output.RemoveAt(index);
+        //            Modifications = new ObservableCollection<Modification>(output);
+        //            MessageBox.Show("Modification deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+        //            RaisePropertyChanged("Indexes");
+        //            SelectedModificationAuthorId = Indexes[0];
+        //            return;
+        //        }
+        //    }
+        //});
+        //public RelayCommand ModifyModificationCommand => new RelayCommand(() =>
+        //{
+        //    if (SelectedModificationAuthorId == "None")
+        //    {
+        //        MessageBox.Show("Select Author of Modification you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //        return;
+        //    }
+        //    for (var index = 0; index < Modifications.Count; index++)
+        //    {
+        //        if (Modifications[index].AuthorId == SelectedModificationAuthorId)
+        //        {
+        //            var output = Modifications.ToList();
+        //            output[index] = new Modification()
+        //            {
+        //                ModificationDate = ModificationDate,
+        //                AuthorId = AuthorId,
+        //                Note = Note
+        //            };
+        //            Modifications = new ObservableCollection<Modification>(output);
+        //            MessageBox.Show("Modification changed successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+        //            RaisePropertyChanged("Indexes");
+        //            SelectedModificationAuthorId = Indexes[0];
+        //            return;
+        //        }
+        //    }
+        //});
 
         public string ModificationDate => DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -383,27 +384,27 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string selectedModificationAuthorId;
-        public string SelectedModificationAuthorId
-        {
-            get => SelectedModificationAuthorId;
-            set
-            {
-                if (value == "None")
-                {
-                    authorId = modificationDate = note = "";
-                }
-                else
-                {
-                    Modification a = Modifications.First(modifacation => modifacation.AuthorId == value);
-                    authorId = a.AuthorId;
-                    modificationDate = a.ModificationDate;
-                    note = a.Note;
-                }
-                SelectedModificationAuthorId = value;
-                RaisePropertyChanged();
-            }
-        }
+        //private string selectedModificationAuthorId;
+        //public string SelectedModificationAuthorId
+        //{
+        //    get => SelectedModificationAuthorId;
+        //    set
+        //    {
+        //        if (value == "None")
+        //        {
+        //            authorId = modificationDate = note = "";
+        //        }
+        //        else
+        //        {
+        //            Modification a = Modifications.First(modifacation => modifacation.AuthorId == value);
+        //            authorId = a.AuthorId;
+        //            modificationDate = a.ModificationDate;
+        //            note = a.Note;
+        //        }
+        //        SelectedModificationAuthorId = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
         private Visibility modificationsEnabled;
         public Visibility ModificationsEnabled
