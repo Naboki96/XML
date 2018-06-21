@@ -23,18 +23,15 @@ namespace XML.BL.Serialization
             });
         }
 
-        public async Task<T> Deserialize<T>(string filename)
+        public T Deserialize<T>(string filename)
         {
-            return await Task.Run(() =>
+            using (XmlReader xmlReader = XmlReader.Create(filename))
             {
-                using (XmlReader xmlReader = XmlReader.Create(filename))
-                {
-                    DataContractSerializer serializer =
-                        new DataContractSerializer(typeof(T));
-                    T theObject = (T)serializer.ReadObject(xmlReader);
-                    return theObject;
-                }
-            });
+                DataContractSerializer serializer =
+                    new DataContractSerializer(typeof(T));
+                T theObject = (T)serializer.ReadObject(xmlReader);
+                return theObject;
+            }
         }
     }
 }

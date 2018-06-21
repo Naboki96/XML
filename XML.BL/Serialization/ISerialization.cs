@@ -7,6 +7,6 @@ namespace XML.BL.Serialization
     public interface ISerialization
     {
         Task Serialize<T>(T objectToSave, string filename);
-        Task<T> Deserialize<T>(string filename);
+        T Deserialize<T>(string filename);
     }
 }

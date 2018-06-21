@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href = "File3.css" type = "text/css"?>
+<!DOCTYPE GameLibrary SYSTEM "File2.dtd" >
+
+
+<GameLibrary>
+
+  <Authors>
+    <Author Index="a204019">
+      <AuthorName>Adam</AuthorName>
+      <Surname>Trzeszczak</Surname> 
+    </Author>
+    <Author Index="a203897">
+      <AuthorName>Szymon</AuthorName>
+      <Surname>Junde</Surname> 
+    </Author>
+  </Authors>
+  
+  <ModificationsList>
+    <Modification AuthorId="a204019">
+      <ModificationDate>
+        <Day>12</Day>
+        <Month>03</Month>
+        <Year>2018</Year>
+      </ModificationDate>
+      <Note>Created the document.</Note>
+    </Modification> 
+    <Modification AuthorId="a204019">
+      <ModificationDate>
+        <Day>17</Day>
+        <Month>03</Month>
+        <Year>2018</Year>
+      </ModificationDate>
+      <Note>Changed Price - Value attribute changed to text value of the Price element</Note>
+    </Modification> 
+    <Modification AuthorId="a204019">
+      <ModificationDate>
+        <Day>18</Day>
+        <Month>03</Month>
+        <Year>2018</Year>
+      </ModificationDate>
+      <Note>Changing Name elements in Author, Publisher and Producer acordingly. 
+        Changing Date elements in Modification and Game.
+        Changing Image attribute in Game to element for it to be accesible in CSS.</Note>
+    </Modification> 
+    <Modification AuthorId="a204019">
+      <ModificationDate>
+        <Day>20</Day>
+        <Month>03</Month>
+        <Year>2018</Year>
+      </ModificationDate>
+      <Note>Fixing ID type values.
+        Changing Id attributes in Producer and Publisher accordingly.
+        Changing one Curency attribute values</Note>
+    </Modification> 
+  </ModificationsList>
+
+  <GameList>
+    <Game GameId="g0" Genre="RPG">
+      <Image>KingdomCome.jpeg</Image>
+      <Title>Kingdom Come: Deliverance</Title>
+      <ProductKey>I709TQacj9xu8xB</ProductKey>
+      <Price Curency="EUR">170.39</Price>
+      <AgeRating>18+</AgeRating>
+      <ReleaseDate>
+        <Day>13</Day>
+        <Month>02</Month>
+        <Year>2018</Year>
+      </ReleaseDate>
+      <ProducerId>0</ProducerId>
+      <PublisherId>1</PublisherId>
+      <Description>
+        Akcja gry została osadzona w realiach Europy Środkowej na początku XV wieku. Główne tło dla fabuły stanowi najazd węgierskiego króla Zygmunta Luksemburskiego na królestwo Czech i związana z nim zawierucha wojenna jaka ogarnia ten kraj. Gracz wciela się w Henryka, syna kowala zamieszkałego w grodzie Skalica. Kiedy pewnego dnia wioska protagonisty zostaje zniszczona przez armię wroga, a on sam traci swoich rodziców, poprzysięga wypełnić ostatnią wolę ojca i dokonać zemsty na sprawcach napaści. Kierowany chęcią odwetu Henryk szybko zostaje wplątany w wielką politykę oraz sieć intryg, które w konsekwencji zmuszają go do podjęcia próby uratowania prawowitego króla Wacława i przywrócenia porządku w królestwie.
+      </Description>
+      <Statistics>
+        <TimePlayed>174</TimePlayed>
+        <LastSessionDate>
+          <Day>15</Day>
+          <Month>02</Month>
+          <Year>2018</Year>
+        </LastSessionDate>
+        <Achievements Count="25">
+          <Completed>10</Completed>
+        </Achievements>
+      </Statistics>
+    </Game>
+    <Game GameId="g1" Genre="RPG">
+      <Image>Wiesiek.jpeg</Image>
+        <Title>Wiedźmin 3: Dziki Gon</Title>
+        <ProductKey>QLc68vYnA5EnaYX</ProductKey>
+        <Price Curency="PLN">50.23</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>19</Day>
+              <Month>05</Month>
+              <Year>2015</Year>
+        </ReleaseDate>
+        <ProducerId>1</ProducerId>
+        <PublisherId>0</PublisherId>
+        <Description>
+          Akcja Wiedźmina 3 rozgrywa się w fikcyjnym świecie fantasy stworzonym przez pisarza Andrzeja Sapkowskiego w serii opowiadań i powieści. Gracz ma okazję zwiedzić wyspy Skellige, Wolne Miasto Novigrad, Oxenfurt, wiedźmińskie siedliszcze Kaer Morhen czy ponure moczary Velen. Gra rozpoczyna się pół roku po wydarzeniach z poprzedniej części. Wiedźmin Geralt odzyskuje w końcu pamięć, nie ma jednak zamiaru przyłączyć się do którejkolwiek ze stron konfliktu. Zamiast tego zajmuje się on poszukiwaniem swoich bliskich, m.in. Yennefer z Vengerbergu, Ciri oraz tytułowego Dzikiego Gonu.
+        </Description>
+        <Statistics>
+          <TimePlayed>534</TimePlayed>
+          <LastSessionDate>
+              <Day>26</Day>
+              <Month>07</Month>
+              <Year>2017</Year>
+          </LastSessionDate>
+          <Achievements Count="89">
+            <Completed>67</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g2" Genre="Action">
+      <Image>GTAV.jpeg</Image>
+        <Title>Grand Theft Auto V</Title>
+        <ProductKey>86ScS7EJv5tOvsB</ProductKey>
+        <Price Curency="USD">120.39</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>17</Day>
+              <Month>09</Month>
+              <Year>2013</Year>
+        </ReleaseDate>
+        <ProducerId>2</ProducerId>
+        <PublisherId>2</PublisherId>
+        <Description>
+          Główna fabuła zaczyna się w North Yankton około 2004 roku, gdy Michael Townley i Trevor Philips wraz ze swoim znajomym Bradem napadają na lokalny bank. Po zgarnięciu łupu na zewnątrz czeka oddział policji. Gangsterom udaje się dostać do samochodu i rozpocząć pościg, jednak ten kończy się zderzeniem z pędzącym pociągiem. Bohaterowie cudem przeżywają kolizję, ale na miejscu zdarzenia czekają na nich agenci federalni, którzy zabijają Brada oraz udaje im się postrzelić Townley'a. Trevor po wyeliminowaniu zabójców najlepszego przyjaciela ucieka. Następnie ukazuje się wyjaśnienie, że całe feralne zdarzenie było wcześniej zaplanowane przez Michaela, który zawarł umowę z FIB (odpowiednik amerykańskiej agencji FBI), wobec której zostanie objęty programem ochrony świadków oraz zmieni nazwisko na „De Santa”. Następnie akcja przenosi się do miasta Los Santos w 2013 roku.
+        </Description>
+        <Statistics>
+          <TimePlayed>1523</TimePlayed>
+          <LastSessionDate>
+              <Day>01</Day>
+              <Month>02</Month>
+              <Year>2018</Year>
+          </LastSessionDate>
+          <Achievements Count="78">
+            <Completed>46</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g3" Genre="Action">
+      <Image>ACOrigin.jpeg</Image>
+        <Title>Assassin's Creed Origins</Title>
+        <ProductKey>GVLjGspNyWMiqfV</ProductKey>
+        <Price Curency="PLN">169.74</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>27</Day>
+              <Month>10</Month>
+              <Year>2017</Year>
+        </ReleaseDate>
+        <ProducerId>3</ProducerId>
+        <PublisherId>3</PublisherId>
+        <Description>
+          Kolejna odsłona bestsellerowego cyklu, stanowiąca niejako nowe otwarcie dla serii. Dzieło firmy Ubisoft przenosi graczy do starożytnego Egiptu, gdzie swoje początki miało bractwo tytułowych Asasynów. Za powstaniem owego ugrupowania stała intryga, którą gracz poznaje w toku przygody, wcielając się w Bayeka z Siwy. Oprócz wątku historycznego w grze pojawiają się fragmenty osadzone w czasach współczesnych, w których poznajemy tajemnice korporacji Abstergo Industries. Assassin's Creed: Origins oddaje do naszej dyspozycji rozległy, otwarty świat. 
+        </Description>
+        <Statistics>
+          <TimePlayed>80</TimePlayed>
+          <LastSessionDate>
+              <Day>12</Day>
+              <Month>12</Month>
+              <Year>2017</Year>
+          </LastSessionDate>
+          <Achievements Count="35">
+            <Completed>12</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g4" Genre="RTS">
+      <Image>Northgard.jpeg</Image>
+      <Title>Northgard</Title>
+        <ProductKey>qh57ZkTHLH869F0</ProductKey>
+        <Price Curency="PLN">70.39</Price>
+        <AgeRating>16+</AgeRating>
+        <ReleaseDate>
+              <Day>07</Day>
+              <Month>03</Month>
+              <Year>2018</Year>
+        </ReleaseDate>
+        <ProducerId>4</ProducerId>
+        <PublisherId>4</PublisherId>
+        <Description>
+          Strategia czasu rzeczywistego osadzona w fantastycznym świecie wikingów oraz mitologii skandynawskiej. W Northgard dowodzimy grupą nordyckich wojowników, którzy po wielu latach żmudnej eksploracji natrafili na owiany tajemnicą, bogaty ląd. Aby okryć się sławą, będą oni musieli stawić czoła niebezpieczeństwom czyhającym na nich w nowym świecie. Mechanika rozgrywki w Northgard wzorowana jest na klasycznych RTS-ach, pokroju Age of Empires, Age of Mythology czy The Settlers. Poza standardowym pozyskiwaniem surowców, rozbudową osady i walką, gra oferuje elementy survivalowe, a jednym z głównych zadań gracza jest zapewnienie swojemu klanowi przetrwania podczas długich i niezwykle mroźnych zim.
+        </Description>
+        <Statistics>
+          <TimePlayed>120</TimePlayed>
+          <LastSessionDate>
+              <Day>09</Day>
+              <Month>03</Month>
+              <Year>2018</Year>
+          </LastSessionDate>
+          <Achievements Count="40">
+            <Completed>24</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g5" Genre="RPG">
+      <Image>Skyrim.jpeg</Image>
+        <Title>The Elder Scrolls V: Skyrim</Title>
+        <ProductKey>Zus8xG6xC8XjaQh</ProductKey>
+        <Price Curency="USD">20.86</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>11</Day>
+              <Month>11</Month>
+              <Year>2011</Year>
+        </ReleaseDate>
+        <ProducerId>5</ProducerId>
+        <PublisherId>5</PublisherId>
+        <Description>
+          Akcja toczy się 200 lat po wydarzeniach opowiedzianych w grze Oblivion. Gracze wcielają się w jednego z ostatnich bohaterów parających się profesją dovahkiina, czyli łowcy smoków. Do niedawna wydawało się, że potężne monstra są już tylko wspomnieniem, ale pewnego dnia pokryte łuskami bestie znów zaczynają pojawiać się na niebie, a przepowiednia zwiastuje nadejście Alduina, boga zniszczenia, który przyjmuje postać smoka. Walcząc z tymi groźnymi potworami przejmujemy ich dusze oraz zdolności, czyli tak zwane Krzyki. Za ich pomocą możemy spowolnić czas, odepchnąć przeciwników niewidzialną energią, a nawet wezwać na pomoc sprzymierzonego smoka.
+        </Description>
+        <Statistics>
+          <TimePlayed>4353</TimePlayed>
+          <LastSessionDate>
+              <Day>15</Day>
+              <Month>11</Month>
+              <Year>2017</Year>
+          </LastSessionDate>
+          <Achievements Count="137">
+            <Completed>127</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g6" Genre="RPG">
+      <Image>Morrowind.jpeg</Image>
+        <Title>The Elder Scrolls III: Morrowind</Title>
+        <ProductKey>BpBxpkiny3UU10x</ProductKey>
+        <Price Curency="EUR">32.78</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>11</Day>
+              <Month>11</Month>
+              <Year>2011</Year>
+        </ReleaseDate>
+        <ProducerId>5</ProducerId>
+        <PublisherId>3</PublisherId>
+        <Description>
+          Kontynuacja jednej z największych serii gier cRPG The Elder Scroll III: Morrowind to już trzecia epicka przygoda rozgrywająca się w olbrzymim świecie imperium Tamriel. Jest ono podzielone na osiem prowincji, z których każda zamieszkiwana jest przez inną rasę, posiadającą odrębną kulturę, religię i politykę. Cała seria wyróżnia się dużą swobodą pozostawioną graczom w prowadzeniu postaci i kolejności wykonywania zadań.
+        </Description>
+        <Statistics>
+          <TimePlayed>2534</TimePlayed>
+          <LastSessionDate>
+              <Day>10</Day>
+              <Month>11</Month>
+              <Year>2011</Year>
+          </LastSessionDate>
+          <Achievements Count="46">
+            <Completed>42</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+    <Game GameId="g7" Genre="Action">
+      <Image>ACUnity.jpeg</Image>
+        <Title>Assassin's Creed Unity</Title>
+        <ProductKey>GVLjGspNyWMiqfV</ProductKey>
+        <Price Curency="PLN">170.46</Price>
+        <AgeRating>18+</AgeRating>
+        <ReleaseDate>
+              <Day>11</Day>
+              <Month>11</Month>
+              <Year>2017</Year>
+        </ReleaseDate>
+        <ProducerId>3</ProducerId>
+        <PublisherId>3</PublisherId>
+        <Description>
+          Kolejna odsłona bestsellerowego cyklu, tym razem tytuł ten pozwala wcielić się w rolę Arno – jednego z członków bractwa Asasynów, który wykonuje rozmaite zadania w XVIII-wiecznym Paryżu, podczas Rewolucji Francuskiej. Twórcy zatroszczyli się o odwzorowanie najsłynniejszych miejsc francuskiej stolicy, z rzeką Sekwaną oraz katedrą Notre Dame na czele.
+        </Description>
+        <Statistics>
+          <TimePlayed>350</TimePlayed>
+          <LastSessionDate>
+              <Day>09</Day>
+              <Month>12</Month>
+              <Year>2017</Year>
+          </LastSessionDate>
+          <Achievements Count="68">
+            <Completed>53</Completed>
+          </Achievements>
+        </Statistics>
+    </Game>
+  </GameList>
+
+  <ProducerList>
+    <Producer ProducerId="prod0">
+      <ProducerName>Warhorse Studios</ProducerName>
+      <ProducedGames>
+        <GameId>0</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>1</PublisherId>
+      </Publishers>
+    </Producer>
+    <Producer ProducerId="prod1">
+      <ProducerName>CD Projekt RED</ProducerName>
+      <ProducedGames>
+        <GameId>1</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>0</PublisherId>
+      </Publishers>
+    </Producer>
+    <Producer ProducerId="prod2">
+      <ProducerName>Rockstar North</ProducerName>
+      <ProducedGames>
+        <GameId>2</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>2</PublisherId>
+      </Publishers>
+    </Producer>
+    <Producer ProducerId="prod3">
+      <ProducerName>Ubisoft Montreal</ProducerName>
+      <ProducedGames>
+        <GameId>3</GameId>
+        <GameId>7</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>3</PublisherId>
+      </Publishers>
+    </Producer>
+    <Producer ProducerId="prod4">
+      <ProducerName>Shiro Games</ProducerName>
+      <ProducedGames>
+        <GameId>4</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>4</PublisherId>
+      </Publishers>
+    </Producer>
+    <Producer ProducerId="prod5">
+      <ProducerName>Bethesda Softworks</ProducerName>
+      <ProducedGames>
+        <GameId>5</GameId>
+        <GameId>6</GameId>
+      </ProducedGames>
+      <Publishers>
+        <PublisherId>5</PublisherId>
+        <PublisherId>3</PublisherId>
+      </Publishers>
+    </Producer>
+  </ProducerList>
+
+  <PublisherList>
+    <Publisher PublisherId="publ0">
+      <PublisherName>CD Projekt</PublisherName>
+      <PublishedGames>
+        <GameId>1</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>1</ProducerId>
+      </Producers>
+    </Publisher>
+    <Publisher PublisherId="publ1">
+      <PublisherName>Deep Silver</PublisherName>
+      <PublishedGames>
+        <GameId>0</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>0</ProducerId>
+      </Producers>
+    </Publisher>
+    <Publisher PublisherId="publ2">
+      <PublisherName>Rockstar Games</PublisherName>
+      <PublishedGames>
+        <GameId>2</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>2</ProducerId>
+      </Producers>
+    </Publisher>
+    <Publisher PublisherId="publ3">
+      <PublisherName>Ubisoft</PublisherName>
+      <PublishedGames>
+        <GameId>3</GameId>
+        <GameId>6</GameId>
+        <GameId>7</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>3</ProducerId>
+        <ProducerId>5</ProducerId>
+      </Producers>
+    </Publisher>
+    <Publisher PublisherId="publ4">
+      <PublisherName>Shiro Games</PublisherName>
+      <PublishedGames>
+        <GameId>4</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>4</ProducerId>
+      </Producers>
+    </Publisher>
+    <Publisher PublisherId="publ5">
+      <PublisherName>Bethesda Softworks</PublisherName>
+      <PublishedGames>
+        <GameId>5</GameId>
+        <GameId>7</GameId>
+      </PublishedGames>
+      <Producers>
+        <ProducerId>5</ProducerId>
+      </Producers>
+    </Publisher>
+  </PublisherList>
+
+</GameLibrary>
