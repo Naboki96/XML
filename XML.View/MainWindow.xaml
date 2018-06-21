@@ -64,7 +64,7 @@
                         Margin="0,0,0,5">
                 <TextBlock Text="Get author By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
                            FontSize="15"/>
-                <ComboBox ItemsSource="{Binding Indexes}" SelectedItem="{Binding SelectedAuthorIndex}"
+                <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedAuthorIndex}"
                           Height="30"
                           FontSize="15"/>
             </StackPanel>
@@ -84,7 +84,7 @@
                          FontSize="15" Width="100" Margin="0,0,5,0"/>
             </StackPanel>
             
-            <ListView ItemsSource="{Binding AuthorsList.Author}"/>
+            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
 

@@ -18,24 +18,24 @@ namespace XML.View.ViewModel
     {
         #region DataProperties
 
-        private Authors authorsList = new Authors();
-        public Authors AuthorsList
+        private GameLibrary gameLibrary;
+
+        public ObservableCollection<Author> AuthorsList
         {
-            get { return authorsList; }
+            get { return new ObservableCollection<Author>(gameLibrary.Authors.Author);}
             set
             {
-                authorsList = value;
+                gameLibrary.Authors.Author = value.ToList();
                 RaisePropertyChanged();
             }
         }
 
-        private GameList gamesList = new GameList();
-        public GameList GamesList
+        public List<Game> GamesList
         {
-            get { return gamesList; }
+            get { return gameLibrary.GameList.Game; }
             set
             {
-                gamesList = value;
+                gameLibrary.GameList.Game = value;
                 RaisePropertyChanged();
             }
         }
@@ -74,7 +74,7 @@ namespace XML.View.ViewModel
         }
 
         #endregion
-        
+
         public MainViewModel()
         {
             Deserialize.Execute(null);
@@ -88,11 +88,7 @@ namespace XML.View.ViewModel
             GameLibrary data = deserializer.Deserialize(reader) as GameLibrary;
             reader.Close();
 
-            AuthorsList = data.Authors;
-            GamesList = data.GameList;
-            Modifications = data.ModificationsList;
-            ProducersList = data.ProducerList;
-            PublishersList = data.PublisherList;
+            gameLibrary = data;
         });
 
         public void CreatePDF(object obj)
@@ -137,17 +133,59 @@ namespace XML.View.ViewModel
             }
             else
             {
-                AuthorsList.Author.Add(new Author
+                List <Author> lol = AuthorsList.ToList();
+                lol.Add(new Author
                 {
                     AuthorName = AuthorName,
                     Index = AuthorIndex,
                     Surname = authorSurname
                 });
+                AuthorsList = new ObservableCollection<Author>(lol);
+                RaisePropertyChanged("Indexes");
                 MessageBox.Show("Author added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         });
-        public RelayCommand DeleteAuthorCommand => new RelayCommand(() => { });
-        public RelayCommand ModifyAuthorCommand => new RelayCommand(() => { });
+        public RelayCommand DeleteAuthorCommand => new RelayCommand(() =>
+        {
+            if (SelectedAuthorIndex == "None")
+            {
+                return;
+            }
+            for (var index = 0; index < AuthorsList.Count; index++)
+            {
+                if (AuthorsList[index].Index == SelectedAuthorIndex)
+                {
+                    List<Author> lol = AuthorsList.ToList();
+                    lol.RemoveAt(index);
+                    AuthorsList = new ObservableCollection<Author>(lol);
+                    RaisePropertyChanged("Indexes");
+                    return;
+                }
+            }
+        });
+        public RelayCommand ModifyAuthorCommand => new RelayCommand(() =>
+        {
+            if (SelectedAuthorIndex == "None")
+            {
+                return;
+            }
+            for (var index = 0; index < AuthorsList.Count; index++)
+            {
+                if (AuthorsList[index].Index == SelectedAuthorIndex)
+                {
+                    var lol = AuthorsList.ToList();
+                    lol[index] = new Author
+                    {
+                        AuthorName = AuthorName,
+                        Index = AuthorIndex,
+                        Surname = authorSurname
+                    };
+                    AuthorsList = new ObservableCollection<Author>(lol);
+                    RaisePropertyChanged("Indexes");
+                    return;
+                }
+            }
+        });
 
         private Visibility authorsEnabled;
         public Visibility AuthorsEnabled
@@ -198,7 +236,7 @@ namespace XML.View.ViewModel
             get
             {
                 List<string> output = new List<string> { "None" };
-                output.AddRange(AuthorsList.Author.Select(author => author.Index));
+                output.AddRange(AuthorsList.Select(author => author.Index));
                 return output.ToArray();
             }
         }
@@ -215,7 +253,7 @@ namespace XML.View.ViewModel
                 }
                 else
                 {
-                    Author a = AuthorsList.Author.Find(author => author.Index == value);
+                    Author a = AuthorsList.First(author => author.Index == value);
                     AuthorIndex = a.Index;
                     AuthorName = a.AuthorName;
                     AuthorSurname = a.Surname;
