@@ -138,14 +138,16 @@ namespace XML.View.ViewModel
                     Surname = authorSurname
                 });
                 AuthorsList = new ObservableCollection<Author>(output);
-                RaisePropertyChanged("Indexes");
                 MessageBox.Show("Author added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                RaisePropertyChanged("Indexes");
+                SelectedAuthorIndex = Indexes[0];
             }
         });
         public RelayCommand DeleteAuthorCommand => new RelayCommand(() =>
         {
             if (SelectedAuthorIndex == "None")
             {
+                MessageBox.Show("Select Index of Author you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             for (var index = 0; index < AuthorsList.Count; index++)
@@ -155,7 +157,9 @@ namespace XML.View.ViewModel
                     List<Author> output = AuthorsList.ToList();
                     output.RemoveAt(index);
                     AuthorsList = new ObservableCollection<Author>(output);
+                    MessageBox.Show("Author deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                     RaisePropertyChanged("Indexes");
+                    SelectedAuthorIndex = Indexes[0];
                     return;
                 }
             }
@@ -164,6 +168,7 @@ namespace XML.View.ViewModel
         {
             if (SelectedAuthorIndex == "None")
             {
+                MessageBox.Show("Select Index of Author you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             for (var index = 0; index < AuthorsList.Count; index++)
@@ -178,7 +183,9 @@ namespace XML.View.ViewModel
                         Surname = authorSurname
                     };
                     AuthorsList = new ObservableCollection<Author>(output);
+                    MessageBox.Show("Author Modified successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                     RaisePropertyChanged("Indexes");
+                    SelectedAuthorIndex = Indexes[0];
                     return;
                 }
             }
