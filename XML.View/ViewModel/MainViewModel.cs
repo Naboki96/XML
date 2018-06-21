@@ -13,15 +13,69 @@ namespace XML.View.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public Authors AuthorsList = new Authors();
-        public GameList GamesList = new GameList();
-        public ModificationsList Modifications = new ModificationsList();
-        public ProducerList ProducersList = new ProducerList();
-        public PublisherList PublishersList = new PublisherList();
+        #region DataProperties
 
+        private Authors authorsList = new Authors();
+        public Authors AuthorsList
+        {
+            get { return authorsList; }
+            set
+            {
+                authorsList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private GameList gamesList = new GameList();
+        public GameList GamesList
+        {
+            get { return gamesList; }
+            set
+            {
+                gamesList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ModificationsList modifications = new ModificationsList();
+        public ModificationsList Modifications
+        {
+            get { return modifications; }
+            set
+            {
+                modifications = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private ProducerList producersList = new ProducerList();
+        public ProducerList ProducersList
+        {
+            get { return producersList; }
+            set
+            {
+                producersList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private PublisherList publishersList = new PublisherList();
+        public PublisherList PublishersList
+        {
+            get { return publishersList; }
+            set
+            {
+                publishersList = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+        
         public MainViewModel()
         {
-
+            Deserialize.Execute(null);
+            SelectedAuthorIndex = Indexes[0];
         }
 
         public RelayCommand Deserialize => new RelayCommand(() =>
@@ -38,10 +92,8 @@ namespace XML.View.ViewModel
             PublishersList = data.PublisherList;
         });
 
-        //public string[] Items => GameLiberaryData.Select(tuple => tuple.Item1).ToArray();
-
         #region Authors
-        
+
         public RelayCommand ManageAuthorsCommand => new RelayCommand(() =>
         {
             Visibility valueToSet = Visibility.Collapsed;
@@ -62,7 +114,25 @@ namespace XML.View.ViewModel
             GamesEnabled = opositeValue;
             ModificationsEnabled = opositeValue;
         });
-        public RelayCommand AddAuthorCommand => new RelayCommand(() => { });
+        public RelayCommand AddAuthorCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(AuthorName) ||
+                string.IsNullOrEmpty(AuthorSurname) ||
+                string.IsNullOrEmpty(AuthorIndex))
+            {
+                MessageBox.Show("Missing data to add new Author", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                AuthorsList.Author.Add(new Author
+                {
+                    AuthorName = AuthorName,
+                    Index = AuthorIndex,
+                    Surname = authorSurname
+                });
+                MessageBox.Show("Author added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
         public RelayCommand DeleteAuthorCommand => new RelayCommand(() => { });
         public RelayCommand ModifyAuthorCommand => new RelayCommand(() => { });
 
@@ -99,20 +169,47 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string index;
-        public string Index
+        private string authorIndex;
+        public string AuthorIndex
         {
-            get => index;
+            get => authorIndex;
             set
             {
-                index = value;
+                authorIndex = value;
                 RaisePropertyChanged();
             }
         }
 
         public string[] Indexes
         {
-            get => new []{"123","321"};
+            get
+            {
+                List<string> output = new List<string> { "None" };
+                output.AddRange(AuthorsList.Author.Select(author => author.Index));
+                return output.ToArray();
+            }
+        }
+
+        private string selectedAuthorIndex;
+        public string SelectedAuthorIndex
+        {
+            get => selectedAuthorIndex;
+            set
+            {
+                if (value == "None")
+                {
+                    AuthorIndex = AuthorName = AuthorSurname = "";
+                }
+                else
+                {
+                    Author a = AuthorsList.Author.Find(author => author.Index == value);
+                    AuthorIndex = a.Index;
+                    AuthorName = a.AuthorName;
+                    AuthorSurname = a.Surname;
+                }
+                selectedAuthorIndex = value;
+                RaisePropertyChanged();
+            }
         }
 
         #endregion
@@ -667,6 +764,7 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
+
 
         #endregion
 

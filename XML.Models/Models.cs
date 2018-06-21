@@ -17,6 +17,11 @@ namespace Xml2CSharp
         public string Surname { get; set; }
         [XmlAttribute(AttributeName = "Index")]
         public string Index { get; set; }
+
+        public override string ToString()
+        {
+            return $"Name: {AuthorName} {Surname}, Index: {Index}.";
+        }
     }
 
     [XmlRoot(ElementName = "Authors", Namespace = "http://www.w3schools.com")]
