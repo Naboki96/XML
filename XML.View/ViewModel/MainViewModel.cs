@@ -40,11 +40,11 @@ namespace XML.View.ViewModel
 
             GameLiberaryData.AddRange(
                 data.ProducerList.Producer.Select(
-                    producer => new Tuple<string, XmlType, object>(producer.ProducerName, XmlType.Modification, producer)));
+                    producer => new Tuple<string, XmlType, object>(producer.ProducerName, XmlType.Producer, producer)));
 
             GameLiberaryData.AddRange(
                 data.PublisherList.Publisher.Select(
-                    publisher => new Tuple<string, XmlType, object>(publisher.PublisherName, XmlType.Modification, publisher)));
+                    publisher => new Tuple<string, XmlType, object>(publisher.PublisherName, XmlType.Publisher, publisher)));
         });
 
         public string[] Items => GameLiberaryData.Select(tuple => tuple.Item1).ToArray();
