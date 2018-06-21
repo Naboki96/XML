@@ -20,7 +20,7 @@ namespace Xml2CSharp
 
         public override string ToString()
         {
-            return $"Name: {AuthorName} {Surname}, Index: {Index}.";
+            return $"Author: {AuthorName} {Surname}, Index: {Index}.";
         }
     }
 
@@ -40,6 +40,11 @@ namespace Xml2CSharp
         public string Note { get; set; }
         [XmlAttribute(AttributeName = "AuthorId")]
         public string AuthorId { get; set; }
+
+        public override string ToString()
+        {
+            return $"Modification: {Note}, by: {AuthorId}, Date: {ModificationDate}.";
+        }
     }
 
     [XmlRoot(ElementName = "ModificationsList", Namespace = "http://www.w3schools.com")]
@@ -119,6 +124,15 @@ namespace Xml2CSharp
         public string GameId { get; set; }
         [XmlAttribute(AttributeName = "Genre")]
         public string Genre { get; set; }
+
+        public override string ToString()
+        {
+            return $"Game: {Title}, {Genre},  {GameId}," +
+                   $"{Environment.NewLine} {Image}, {ProductKey},  Price: {Price}, {AgeRating},  ReleaseDate: {ReleaseDate}" +
+                   $"{Environment.NewLine} Publisher: {PublisherId}, Producer: {ProducerId}" +
+                   $"{Environment.NewLine} {Description}" +
+                   $"{Environment.NewLine} Statistics: {Statistics}";
+        }
     }
 
     [XmlRoot(ElementName = "GameList", Namespace = "http://www.w3schools.com")]
@@ -160,6 +174,14 @@ namespace Xml2CSharp
         public Publishers Publishers { get; set; }
         [XmlAttribute(AttributeName = "ProducerId")]
         public string ProducerId { get; set; }
+
+        public override string ToString()
+        {
+            return $"Producer: {ProducerName} {ProducerId}. " +
+                   $"{Environment.NewLine} Games: {ProducedGames}. " +
+                   $"{Environment.NewLine} Publishers: {Publishers}";
+        }
+
     }
 
     [XmlRoot(ElementName = "ProducerList", Namespace = "http://www.w3schools.com")]
@@ -194,6 +216,13 @@ namespace Xml2CSharp
         public Producers Producers { get; set; }
         [XmlAttribute(AttributeName = "PublisherId")]
         public string PublisherId { get; set; }
+
+        public override string ToString()
+        {
+            return $"Producer: {PublisherName} {PublisherId}. " +
+                   $"{Environment.NewLine} Games: {PublishedGames}. " +
+                   $"{Environment.NewLine} Publishers: {Producers}";
+        }
     }
 
     [XmlRoot(ElementName = "PublisherList", Namespace = "http://www.w3schools.com")]
