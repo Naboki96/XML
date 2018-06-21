@@ -30,45 +30,42 @@ namespace XML.View.ViewModel
             }
         }
 
-        public List<Game> GamesList
+        public ObservableCollection<Game> GamesList
         {
-            get { return gameLibrary.GameList.Game; }
+            get { return new ObservableCollection<Game>(gameLibrary.GameList.Game); }
             set
             {
-                gameLibrary.GameList.Game = value;
+                gameLibrary.GameList.Game = value.ToList();
                 RaisePropertyChanged();
             }
         }
 
-        private ModificationsList modifications = new ModificationsList();
-        public ModificationsList Modifications
+        public ObservableCollection<Modification> Modifications
         {
-            get { return modifications; }
+            get { return new ObservableCollection<Modification>(gameLibrary.ModificationsList.Modification); }
             set
             {
-                modifications = value;
+                gameLibrary.ModificationsList.Modification = value.ToList();
                 RaisePropertyChanged();
             }
         }
 
-        private ProducerList producersList = new ProducerList();
-        public ProducerList ProducersList
+        public ObservableCollection<Producer> ProducersList
         {
-            get { return producersList; }
+            get { return new ObservableCollection<Producer>(gameLibrary.ProducerList.Producer); }
             set
             {
-                producersList = value;
+                gameLibrary.ProducerList.Producer = value.ToList();
                 RaisePropertyChanged();
             }
         }
 
-        private PublisherList publishersList = new PublisherList();
-        public PublisherList PublishersList
+        public ObservableCollection<Publisher> PublishersList
         {
-            get { return publishersList; }
+            get { return new ObservableCollection<Publisher>(gameLibrary.PublisherList.Publisher); }
             set
             {
-                publishersList = value;
+                gameLibrary.PublisherList.Publisher = value.ToList();
                 RaisePropertyChanged();
             }
         }
@@ -133,14 +130,14 @@ namespace XML.View.ViewModel
             }
             else
             {
-                List <Author> lol = AuthorsList.ToList();
-                lol.Add(new Author
+                List <Author> output = AuthorsList.ToList();
+                output.Add(new Author
                 {
                     AuthorName = AuthorName,
                     Index = AuthorIndex,
                     Surname = authorSurname
                 });
-                AuthorsList = new ObservableCollection<Author>(lol);
+                AuthorsList = new ObservableCollection<Author>(output);
                 RaisePropertyChanged("Indexes");
                 MessageBox.Show("Author added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -155,9 +152,9 @@ namespace XML.View.ViewModel
             {
                 if (AuthorsList[index].Index == SelectedAuthorIndex)
                 {
-                    List<Author> lol = AuthorsList.ToList();
-                    lol.RemoveAt(index);
-                    AuthorsList = new ObservableCollection<Author>(lol);
+                    List<Author> output = AuthorsList.ToList();
+                    output.RemoveAt(index);
+                    AuthorsList = new ObservableCollection<Author>(output);
                     RaisePropertyChanged("Indexes");
                     return;
                 }
@@ -173,14 +170,14 @@ namespace XML.View.ViewModel
             {
                 if (AuthorsList[index].Index == SelectedAuthorIndex)
                 {
-                    var lol = AuthorsList.ToList();
-                    lol[index] = new Author
+                    var output = AuthorsList.ToList();
+                    output[index] = new Author
                     {
                         AuthorName = AuthorName,
                         Index = AuthorIndex,
                         Surname = authorSurname
                     };
-                    AuthorsList = new ObservableCollection<Author>(lol);
+                    AuthorsList = new ObservableCollection<Author>(output);
                     RaisePropertyChanged("Indexes");
                     return;
                 }
@@ -289,6 +286,27 @@ namespace XML.View.ViewModel
             GamesEnabled = opositeValue;
             AuthorsEnabled = opositeValue;
         });
+        public RelayCommand AddModificationCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(ModificationDate) ||
+                string.IsNullOrEmpty(Note) ||
+                string.IsNullOrEmpty(AuthorId))
+            {
+                MessageBox.Show("Missing data to add new Modification", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                var output = Modifications.ToList();
+                output.Add(new Modification
+                {
+                    ModificationDate = ModificationDate,
+                    Note = Note,
+                    AuthorId = AuthorId
+                });
+                Modifications = new ObservableCollection<Modification>(output);
+                MessageBox.Show("Modification added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        });
 
         private string modificationDate;
         public string ModificationDate
@@ -328,25 +346,7 @@ namespace XML.View.ViewModel
         //    get => new[] { "123", "321" };
         //}
 
-        public RelayCommand AddModificationCommand => new RelayCommand(() =>
-        {
-            if (string.IsNullOrEmpty(ModificationDate) ||
-                string.IsNullOrEmpty(Note) ||
-                string.IsNullOrEmpty(AuthorId))
-            {
-                MessageBox.Show("Missing data to add new Modification", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                Modifications.Modification.Add(new Modification
-                {
-                    ModificationDate = ModificationDate,
-                    Note = Note,
-                    AuthorId = AuthorId
-                });
-                MessageBox.Show("Modification added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        });
+
 
         public Visibility ModificationsEnabled
         {
@@ -383,6 +383,49 @@ namespace XML.View.ViewModel
             ProducersEnabled = opositeValue;
             ModificationsEnabled = opositeValue;
             AuthorsEnabled = opositeValue;
+        });
+        public RelayCommand AddGameCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(Image) ||
+                string.IsNullOrEmpty(Title) ||
+                string.IsNullOrEmpty(ProductKey) ||
+                string.IsNullOrEmpty(AgeRating) ||
+                string.IsNullOrEmpty(ReleaseDate) ||
+                string.IsNullOrEmpty(Description) ||
+                string.IsNullOrEmpty(GameId) ||
+                string.IsNullOrEmpty(Genre) ||
+                string.IsNullOrEmpty(Curency) ||
+                string.IsNullOrEmpty(Text) ||
+                string.IsNullOrEmpty(Idref) ||
+                string.IsNullOrEmpty(IIdref) ||
+                string.IsNullOrEmpty(TimePlayed) ||
+                string.IsNullOrEmpty(LastSessionDate) ||
+                string.IsNullOrEmpty(Completed) ||
+                string.IsNullOrEmpty(Count))
+            {
+                MessageBox.Show("Missing data to add new Game", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                var output = GamesList.ToList();
+                output.Add(new Game
+                {
+                    Image = Image,
+                    Title = Title,
+                    ProductKey = ProductKey,
+                    AgeRating = AgeRating,
+                    ReleaseDate = ReleaseDate,
+                    Description = Description,
+                    GameId = GameId,
+                    Genre = Genre,
+                    Price = Price,
+                    ProducerId = ProducerId,
+                    PublisherId = PublisherId,
+                    Statistics = Statistics
+                });
+                GamesList = new ObservableCollection<Game>(output);
+                MessageBox.Show("Game added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         });
 
         private string image;
@@ -616,48 +659,6 @@ namespace XML.View.ViewModel
             }
         }
 
-        public RelayCommand AddGameCommand => new RelayCommand(() =>
-        {
-            if (string.IsNullOrEmpty(Image) ||
-                string.IsNullOrEmpty(Title) ||
-                string.IsNullOrEmpty(ProductKey) ||
-                string.IsNullOrEmpty(AgeRating) ||
-                string.IsNullOrEmpty(ReleaseDate) ||
-                string.IsNullOrEmpty(Description) ||
-                string.IsNullOrEmpty(GameId) ||
-                string.IsNullOrEmpty(Genre) ||
-                string.IsNullOrEmpty(Curency) ||
-                string.IsNullOrEmpty(Text) ||
-                string.IsNullOrEmpty(Idref) ||
-                string.IsNullOrEmpty(IIdref)||
-                string.IsNullOrEmpty(TimePlayed) ||
-                string.IsNullOrEmpty(LastSessionDate) ||
-                string.IsNullOrEmpty(Completed) ||
-                string.IsNullOrEmpty(Count) )
-            {
-                MessageBox.Show("Missing data to add new Game", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                GamesList.Game.Add(new Game
-                {
-                    Image = Image,
-                    Title = Title,
-                    ProductKey = ProductKey,
-                    AgeRating = AgeRating,
-                    ReleaseDate = ReleaseDate,
-                    Description = Description,
-                    GameId = GameId,
-                    Genre = Genre,
-                    Price = Price,
-                    ProducerId = ProducerId,
-                    PublisherId = PublisherId,
-                    Statistics = Statistics
-                });
-                MessageBox.Show("Game added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        });
-
         public Visibility GamesEnabled
         {
             get => gamesEnabled;
@@ -773,13 +774,15 @@ namespace XML.View.ViewModel
             }
             else
             {
-                ProducersList.Producer.Add(new Producer
+                var output = ProducersList.ToList();
+                output.Add(new Producer
                 {
                     ProducerName = ProducerName,
                     ProducerId = ProducersId,
                     ProducedGames = ProducedGames,
                     Publishers = Publishers
                 });
+                ProducersList = new ObservableCollection<Producer>(output);
                 MessageBox.Show("Producer added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         });
@@ -898,13 +901,15 @@ namespace XML.View.ViewModel
             }
             else
             {
-                PublishersList.Publisher.Add(new Publisher
+                var output = PublishersList.ToList();
+                output.Add(new Publisher
                 {
                     PublisherName = PublisherName,
                     PublisherId = PublishersId,
                     PublishedGames = PublishedGames,
                     Producers = Producers
                 });
+                PublishersList = new ObservableCollection<Publisher>(output);
                 MessageBox.Show("Publisher added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         });
