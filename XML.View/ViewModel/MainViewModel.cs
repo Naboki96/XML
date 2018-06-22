@@ -92,7 +92,27 @@ namespace XML.View.ViewModel
         });
 
 
-        public RelayCommand ToPdfCommand => CreatePDF(null);
+        public RelayCommand ToPdfCommand => new RelayCommand(() =>
+        {
+            Document doc = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
+            PdfWriter writ = PdfWriter.GetInstance(doc, new FileStream("PDF.pdf", FileMode.Create));
+            doc.Open();
+            Paragraph paragraph = new Paragraph();
+            paragraph.Add($"GameLibrary:\n" +
+                          $"\tAuthors:\n" +
+                          $"\t\t{string.Join("\n\t\t", gameLibrary.Authors.Author)}\n" +
+                          $"\tModifications:\n" +
+                          $"\t\t{string.Join("\n\t\t", gameLibrary.ModificationsList.Modification)}\n" +
+                          $"\tGames:\n" +
+                          $"\t\t{string.Join("\n\t\t", gameLibrary.GameList.Game)}\n" +
+                          $"\tPublishers:\n" +
+                          $"\t\t{string.Join("\n\t\t", gameLibrary.PublisherList.Publisher)}\n" +
+                          $"\tProducers:\n" +
+                          $"\t\t{string.Join("\n\t\t", gameLibrary.ProducerList.Producer)}");
+            doc.Add(paragraph);
+            doc.Close();
+
+        });
 
         public void CreatePDF(object obj)
         {
