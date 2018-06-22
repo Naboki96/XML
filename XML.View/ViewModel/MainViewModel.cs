@@ -414,6 +414,7 @@ namespace XML.View.ViewModel
             }
         }
 
+        private Visibility modificationsEnabled;
         public Visibility ModificationsEnabled
         {
             get => modificationsEnabled;
@@ -485,7 +486,7 @@ namespace XML.View.ViewModel
                     Price = new Price{Curency = GamePriceCurency, Text = GamePriceValue},
                     ProducerId = new ProducerId{Idref = GameProducerIdref},
                     PublisherId = new PublisherId{Idref = GamePublisherIdref},
-                    Statistics = new Statistics
+                    Statistics = new Statistics 
                     {
                         Achievements = new Achievements { Completed = GameAchievementsCompleted, Count = GameAchievementsCount},
                         LastSessionDate = GameStatisticsLastSessionDate, TimePlayed = gameStatisticsTimePlayed
@@ -714,10 +715,10 @@ namespace XML.View.ViewModel
         private string producerName;
         public string ProducerName
         {
-            get => ProducerName;
+            get => producerName;
             set
             {
-                ProducerName = value;
+                producerName = value;
                 RaisePropertyChanged();
             }
         }
@@ -725,54 +726,32 @@ namespace XML.View.ViewModel
         private string producersId;
         public string ProducersId
         {
-            get => ProducersId;
+            get => producersId;
             set
             {
-                ProducersId = value;
+                producersId = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ProducedGames producedGames;
-        public ProducedGames ProducedGames
+        private string producedGames;
+        public string ProducedGames
         {
-            get => ProducedGames;
+            get => producedGames;
             set
             {
-                ProducedGames = value;
+                producedGames = value;
                 RaisePropertyChanged();
             }
         }
 
-        private List<GameId> gamesId;
-        public List<GameId> GamesId
+        private string publishers;
+        public string Publishers
         {
-            get => producedGames.GameId;
+            get => publishers;
             set
             {
-                GamesId = producedGames.GameId;
-                RaisePropertyChanged();
-            }
-        }
-
-        private Publishers publishers;
-        public Publishers Publishers
-        {
-            get => Publishers;
-            set
-            {
-                Publishers = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private List<PublisherId> publisheriId;
-        public List<PublisherId> PublisheriId
-        {
-            get => Publishers.PublisherId;
-            set
-            {
-                PublisheriId = Publishers.PublisherId;
+                publishers = value;
                 RaisePropertyChanged();
             }
         }
@@ -781,8 +760,8 @@ namespace XML.View.ViewModel
         {
             if (string.IsNullOrEmpty(ProducerName) ||
                 string.IsNullOrEmpty(ProducersId) ||
-                !GamesId.Any() ||
-                !PublisheriId.Any())
+                string.IsNullOrEmpty(ProducedGames) ||
+                string.IsNullOrEmpty(ProducersId))
             {
                 MessageBox.Show("Missing data to add new Producer", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -793,8 +772,8 @@ namespace XML.View.ViewModel
                 {
                     ProducerName = ProducerName,
                     ProducerId = ProducersId,
-                    ProducedGames = ProducedGames,
-                    Publishers = Publishers
+                    ProducedGames = new ProducedGames(),
+                    Publishers = new Publishers()
                 });
                 ProducersList = new ObservableCollection<Producer>(output);
                 MessageBox.Show("Producer added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -841,10 +820,10 @@ namespace XML.View.ViewModel
         private string publisherName;
         public string PublisherName
         {
-            get => PublisherName;
+            get => publisherName;
             set
             {
-                PublisherName = value;
+                publisherName = value;
                 RaisePropertyChanged();
             }
         }
@@ -852,54 +831,32 @@ namespace XML.View.ViewModel
         private string publishersId;
         public string PublishersId
         {
-            get => PublishersId;
+            get => publishersId;
             set
             {
-                PublishersId = value;
+                publishersId = value;
                 RaisePropertyChanged();
             }
         }
 
-        private PublishedGames publishedGames;
-        public PublishedGames PublishedGames
+        private string publishedGames;
+        public string PublishedGames
         {
-            get => PublishedGames;
+            get => publishedGames;
             set
             {
-                PublishedGames = value;
+                publishedGames = value;
                 RaisePropertyChanged();
             }
         }
 
-        private List<GameId> gamesiId;
-        public List<GameId> GamesiId
+        private string producers;
+        public string Producers
         {
-            get => PublishedGames.GameId;
+            get => producers;
             set
             {
-                GamesiId = PublishedGames.GameId;
-                RaisePropertyChanged();
-            }
-        }
-
-        private Producers producers;
-        public Producers Producers
-        {
-            get => Producers;
-            set
-            {
-                Producers = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private List<ProducerId> produceriId;
-        public List<ProducerId> ProduceriId
-        {
-            get => Producers.ProducerId;
-            set
-            {
-                ProduceriId = Producers.ProducerId;
+                producers = value;
                 RaisePropertyChanged();
             }
         }
@@ -908,8 +865,8 @@ namespace XML.View.ViewModel
         {
             if (string.IsNullOrEmpty(PublisherName) ||
                 string.IsNullOrEmpty(PublishersId) ||
-                !GamesId.Any() ||
-                !ProduceriId.Any())
+                string.IsNullOrEmpty(PublishedGames) ||
+                string.IsNullOrEmpty(Producers))
             {
                 MessageBox.Show("Missing data to add new Publisher", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -920,8 +877,8 @@ namespace XML.View.ViewModel
                 {
                     PublisherName = PublisherName,
                     PublisherId = PublishersId,
-                    PublishedGames = PublishedGames,
-                    Producers = Producers
+                    PublishedGames = new PublishedGames(),
+                    Producers = new Producers()
                 });
                 PublishersList = new ObservableCollection<Publisher>(output);
                 MessageBox.Show("Publisher added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
