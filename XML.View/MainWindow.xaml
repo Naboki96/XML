@@ -6,25 +6,17 @@
         xmlns:local="clr-namespace:XML.View"
         xmlns:viewModels="clr-namespace:XML.View.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="910"
+        Title="MainWindow" Height="700" Width="710"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
-                  Margin="10"
-                  ItemsSource="{Binding Items}"/>
-
-        <StackPanel Grid.Column="1" Grid.Row="0"
+        <StackPanel Grid.Row="0"
                     Margin="10,10,10,5"
                     Orientation="Horizontal">
             <Button Content="Manage Authors" Command="{Binding ManageAuthorsCommand}"
@@ -40,11 +32,19 @@
                     Margin="5,0,5,0" Height="30"
                     FontSize="15"/>
             <Button Content="Manage Producers" Command="{Binding ManageProducersCommand}"
-                    Margin="5,0,0,0" Height="30"
+                    Margin="5,0,5,0" Height="30"
                     FontSize="15"/>
+            
+            <Border BorderBrush="Black" BorderThickness="2,0,0,0"
+                    Margin="5,0,0,0">
+                <StackPanel>
+                    <Button Content="ToPdf" Command="{Binding ToPdfCommand}" Height="30"
+                            FontSize="15"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1"
+        <StackPanel Grid.Row="1"
                     Margin="10,5,10,5"
                     Orientation="Vertical"
                     Visibility="{Binding AuthorsEnabled}">
@@ -86,10 +86,11 @@
                          FontSize="15" Width="100" Margin="0,0,5,0"/>
             </StackPanel>
             
-            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"
+                      Height="496"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1"
+        <StackPanel Grid.Row="1"
                     Margin="10,5,10,5"
                     Orientation="Vertical"
                     Visibility="{Binding ModificationsEnabled}">
@@ -105,7 +106,7 @@
                 <TextBlock Text="Date: " Height="30" Margin="0,0,2.5,0" ToolTip="YYYY-MM-DD"
                            FontSize="15"/>
                 <Border BorderBrush="Gray" BorderThickness="1">
-                    <TextBlock Text="{Binding ModificationDate}"  ToolTip="YYYY-MM-DD" Height="30"
+                    <TextBlock Text="{Binding ModificationDate}" Background="LightGray" ToolTip="YYYY-MM-DD" Height="30"
                              FontSize="15" Width="100" />
                 </Border>
                 <TextBlock Text="Index: " Height="30" Margin="5,0,2.5,0"
@@ -117,56 +118,251 @@
             <TextBlock Text="Note: " Height="30" Margin="0,0,2.5,0"
                        FontSize="15" />
 
-            <TextBox Text="{Binding Note, Mode=TwoWay}" Height="60" HorizontalAlignment="Left"
-                     FontSize="15" Width="674"
+            <TextBox Text="{Binding Note, Mode=TwoWay}" Height="120" HorizontalAlignment="Left"
+                     FontSize="15" Width="674" Margin="0,0,0,10"
                      TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
 
-            <ListView ItemsSource="{Binding Modifications, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListView ItemsSource="{Binding Modifications, UpdateSourceTrigger=PropertyChanged}"
+                      Height="369"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1"
+        <StackPanel Grid.Row="1"
                     Margin="10,5,10,5"
                     Orientation="Vertical"
                     Visibility="{Binding GamesEnabled}">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                         Margin="0,0,0,5">
-                <Button Content="Add Author" Command="{Binding AddAuthorCommand}"
+                <Button Content="Add Game" Command="{Binding AddGameCommand}"
                         Margin="0,0,5,0" Height="30"
                         FontSize="15"/>
-                <Button Content="Delete Author" Command="{Binding DeleteAuthorCommand}"
+                <Button Content="Delete Game" Command="{Binding DeleteGameCommand}"
                         Margin="5,0,5,0" Height="30"
                         FontSize="15"/>
-                <Button Content="Modify Author" Command="{Binding ModifyAuthorCommand}"
+                <Button Content="Modify Game" Command="{Binding ModifyGameCommand}"
                         Margin="5,0" Height="30"
                         FontSize="15"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
                         Margin="0,0,0,5">
-                <TextBlock Text="Get author By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                <TextBlock Text="Get game By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
                            FontSize="15"/>
-                <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedAuthorIndex}"
+                <ComboBox ItemsSource="{Binding GameIds, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedGameId}"
                           Height="30" FontSize="15"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" 
                         Margin="0,0,0,5">
-                <TextBlock Text="Index: " Height="30" Margin="0,0,2.5,0"
+                <TextBlock Text="GameId: " Height="30" Margin="0,0,2.5,0"
                            FontSize="15"/>
-                <TextBox Text="{Binding AuthorIndex, Mode=TwoWay}" Height="30"
-                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+                <TextBox Text="{Binding GameId, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="40" Margin="0,0,5,0"/>
                 <TextBlock Text="Name: " Height="30" Margin="0,0,2.5,0"
                            FontSize="15"/>
-                <TextBox Text="{Binding AuthorName, Mode=TwoWay}" Height="30"
-                         FontSize="15" Width="100" Margin="0,0,5,0"/>
-                <TextBlock Text="Surname: " Height="30" Margin="0,0,2.5,0"
+                <TextBox Text="{Binding GameTitle, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                <TextBlock Text="Genre: " Height="30" Margin="0,0,2.5,0"
                            FontSize="15" />
-                <TextBox Text="{Binding AuthorSurname, Mode=TwoWay}" Height="30"
+                <TextBox Text="{Binding GameGenre, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="75" Margin="0,0,5,0"/>
+                <TextBlock Text="Release date: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15" />
+                <TextBox Text="{Binding GameReleaseDate, Mode=TwoWay}" Height="30"
                          FontSize="15" Width="100" Margin="0,0,5,0"/>
             </StackPanel>
 
-            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Age rating: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameAgeRating, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="50" Margin="0,0,5,0"/>
+                <TextBlock Text="Price: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GamePriceValue, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                <TextBlock Text="Curency: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15" />
+                <TextBox Text="{Binding GamePriceCurency, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <TextBlock Text="Description: " Height="30" Margin="0,0,2.5,0"
+                       FontSize="15" />
+
+            <TextBox Text="{Binding GameDescription, Mode=TwoWay}" Height="120" HorizontalAlignment="Left"
+                     FontSize="15" Width="674" Margin="0,0,0,10"
+                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Image name: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameImage, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="50" Margin="0,0,5,0"/>
+                <TextBlock Text="Product key: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameProductKey, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Achievements completed: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameAchievementsCompleted, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="50" Margin="0,0,5,0"/>
+                <TextBlock Text="Achievements all: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameAchievementsCount, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Last session: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameStatisticsLastSessionDate, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="50" Margin="0,0,5,0"/>
+                <TextBlock Text="Time played: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding GameStatisticsTimePlayed, Mode=TwoWay}" Height="30"
+                         FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Producer id: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding ProducerIds, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding GameSelectedProducerId}"
+                          Height="30" FontSize="15"/>
+                <TextBlock Text="Publisher id: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding PublisherIds, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding GameSelectedPublisherId}"
+                          Height="30" FontSize="15"/>
+            </StackPanel>
+
+            <ListView ItemsSource="{Binding GamesList, UpdateSourceTrigger=PropertyChanged}"
+                      Height="161" Width="674"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Margin="10,5,10,5"
+                    Orientation="Vertical"
+                    Visibility="{Binding PublishersEnabled}">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                        Margin="0,0,0,5">
+                <Button Content="Add Publisher" Command="{Binding AddPublisherCommand}"
+                        Margin="0,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Delete Publisher" Command="{Binding DeletePublisherCommand}"
+                        Margin="5,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Modify Publisher" Command="{Binding ModifyPublisherCommand}"
+                        Margin="5,0" Height="30"
+                        FontSize="15"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Get publisher By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding PublisherIds, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedPublisherId}"
+                          Height="30" FontSize="15"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Id: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding PublisherId, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="75" Margin="0,0,5,0"/>
+                <TextBlock Text="Publisher name: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding PublisherName, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Games ids: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <Border BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock Text="{Binding PublishedGames, Mode=TwoWay}" Background="LightGray"  Height="30"
+                               FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                </Border>
+                <TextBlock Text="Producers ids: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <Border BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock Text="{Binding PublisherProducers, Mode=TwoWay}" Background="LightGray"  Height="30"
+                               FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                </Border>
+            </StackPanel>
+
+
+            <ListView ItemsSource="{Binding PublishersList, UpdateSourceTrigger=PropertyChanged}"
+                      Height="496"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Margin="10,5,10,5"
+                    Orientation="Vertical"
+                    Visibility="{Binding ProducersEnabled}">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                        Margin="0,0,0,5">
+                <Button Content="Add Producer" Command="{Binding AddProducerCommand}"
+                        Margin="0,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Delete Producer" Command="{Binding DeleteProducerCommand}"
+                        Margin="5,0,5,0" Height="30"
+                        FontSize="15"/>
+                <Button Content="Modify Producer" Command="{Binding ModifyProducerCommand}"
+                        Margin="5,0" Height="30"
+                        FontSize="15"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Get producer By Index: " ToolTip="Used when modyfying or removing, otherwise ommited." Height="30"
+                           FontSize="15"/>
+                <ComboBox ItemsSource="{Binding ProducerIds, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedProducerId}"
+                          Height="30" FontSize="15"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Id: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding ProducerId, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="75" Margin="0,0,5,0"/>
+                <TextBlock Text="Producer name: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <TextBox Text="{Binding ProducerName, Mode=TwoWay}" Height="30"
+                         FontSize="15" Width="100" Margin="0,0,5,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,0,0,5">
+                <TextBlock Text="Games ids: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <Border BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock Text="{Binding ProducedGames, Mode=TwoWay}" Background="LightGray"  Height="30"
+                               FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                </Border>
+                <TextBlock Text="Publishers ids: " Height="30" Margin="0,0,2.5,0"
+                           FontSize="15"/>
+                <Border BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock Text="{Binding ProducerPublishers, Mode=TwoWay}" Background="LightGray"  Height="30"
+                               FontSize="15" MinWidth="100" Margin="0,0,5,0"/>
+                </Border>
+            </StackPanel>
+
+
+            <ListView ItemsSource="{Binding ProducersList, UpdateSourceTrigger=PropertyChanged}"
+                      Height="496"/>
         </StackPanel>
     </Grid>
 </Window>

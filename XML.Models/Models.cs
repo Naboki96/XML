@@ -6,6 +6,8 @@
 using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace Xml2CSharp
 {
     [XmlRoot(ElementName = "Author", Namespace = "http://www.w3schools.com")]
@@ -68,6 +70,11 @@ namespace Xml2CSharp
     {
         [XmlAttribute(AttributeName = "idref")]
         public string Idref { get; set; }
+
+        public override string ToString()
+        {
+            return Idref;
+        }
     }
 
     [XmlRoot(ElementName = "PublisherId", Namespace = "http://www.w3schools.com")]
@@ -75,6 +82,11 @@ namespace Xml2CSharp
     {
         [XmlAttribute(AttributeName = "idref")]
         public string Idref { get; set; }
+
+        public override string ToString()
+        {
+            return Idref;
+        }
     }
 
     [XmlRoot(ElementName = "Achievements", Namespace = "http://www.w3schools.com")]
@@ -147,20 +159,55 @@ namespace Xml2CSharp
     {
         [XmlAttribute(AttributeName = "idref")]
         public string Idref { get; set; }
+
+        public override string ToString()
+        {
+            return Idref;
+        }
     }
 
     [XmlRoot(ElementName = "ProducedGames", Namespace = "http://www.w3schools.com")]
     public class ProducedGames
     {
+        public ProducedGames()
+        {
+            GameId = new List<GameId>();
+        }
+
+        public ProducedGames(string producedGames)
+        {
+            GameId = producedGames.Split(',', ' ').Select(s => new GameId { Idref = s }).ToList();
+        }
+
         [XmlElement(ElementName = "GameId", Namespace = "http://www.w3schools.com")]
         public List<GameId> GameId { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(", ", GameId);
+        }
     }
 
     [XmlRoot(ElementName = "Publishers", Namespace = "http://www.w3schools.com")]
     public class Publishers
     {
+        public Publishers()
+        {
+            PublisherId = new List<PublisherId>();
+        }
+
+        public Publishers(string producerPublishers)
+        {
+            PublisherId = producerPublishers.Split(',', ' ').Select(s => new PublisherId { Idref = s }).ToList();
+        }
+
         [XmlElement(ElementName = "PublisherId", Namespace = "http://www.w3schools.com")]
         public List<PublisherId> PublisherId { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(", ", PublisherId);
+        }
     }
 
     [XmlRoot(ElementName = "Producer", Namespace = "http://www.w3schools.com")]
@@ -178,8 +225,8 @@ namespace Xml2CSharp
         public override string ToString()
         {
             return $"Producer: {ProducerName} {ProducerId}. " +
-                   $"{Environment.NewLine} Games: {ProducedGames}. " +
-                   $"{Environment.NewLine} Publishers: {Publishers}";
+                   $"{Environment.NewLine} Games: {ProducedGames.ToString()}. " +
+                   $"{Environment.NewLine} Publishers: {Publishers.ToString()}";
         }
 
     }
@@ -194,15 +241,45 @@ namespace Xml2CSharp
     [XmlRoot(ElementName = "PublishedGames", Namespace = "http://www.w3schools.com")]
     public class PublishedGames
     {
+        public PublishedGames()
+        {
+            GameId = new List<GameId>();
+        }
+
+        public PublishedGames(string publishedGames)
+        {
+            GameId = publishedGames.Split(',', ' ').Select(s => new GameId {Idref = s}).ToList();
+        }
+
         [XmlElement(ElementName = "GameId", Namespace = "http://www.w3schools.com")]
         public List<GameId> GameId { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(", ", GameId);
+        }
     }
 
     [XmlRoot(ElementName = "Producers", Namespace = "http://www.w3schools.com")]
     public class Producers
     {
+        public Producers()
+        {
+            ProducerId = new List<ProducerId>();
+        }
+
+        public Producers(string publisherProducers)
+        {
+            ProducerId = publisherProducers.Split(',', ' ').Select(s => new ProducerId {Idref = s}).ToList();
+        }
+
         [XmlElement(ElementName = "ProducerId", Namespace = "http://www.w3schools.com")]
         public List<ProducerId> ProducerId { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(", ", ProducerId);
+        }
     }
 
     [XmlRoot(ElementName = "Publisher", Namespace = "http://www.w3schools.com")]
@@ -219,9 +296,9 @@ namespace Xml2CSharp
 
         public override string ToString()
         {
-            return $"Producer: {PublisherName} {PublisherId}. " +
+            return $"Publisher: {PublisherName} {PublisherId}. " +
                    $"{Environment.NewLine} Games: {PublishedGames}. " +
-                   $"{Environment.NewLine} Publishers: {Producers}";
+                   $"{Environment.NewLine} Producers: {Producers}";
         }
     }
 

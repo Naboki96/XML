@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight.Command;
 using Xml2CSharp;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Org.BouncyCastle.Asn1;
 
 namespace XML.View.ViewModel
 {
@@ -21,7 +22,7 @@ namespace XML.View.ViewModel
 
         public ObservableCollection<Author> AuthorsList
         {
-            get { return new ObservableCollection<Author>(gameLibrary.Authors.Author);}
+            get { return new ObservableCollection<Author>(gameLibrary.Authors.Author); }
             set
             {
                 gameLibrary.Authors.Author = value.ToList();
@@ -90,6 +91,9 @@ namespace XML.View.ViewModel
             gameLibrary = data;
         });
 
+
+        public RelayCommand ToPdfCommand => CreatePDF(null);
+
         public void CreatePDF(object obj)
         {
             Document doc = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
@@ -106,7 +110,7 @@ namespace XML.View.ViewModel
         {
             Visibility valueToSet = Visibility.Collapsed;
             Visibility opositeValue = Visibility.Collapsed;
-            if (PublishersEnabled == Visibility.Collapsed)
+            if (AuthorsEnabled == Visibility.Collapsed)
             {
                 valueToSet = Visibility.Visible;
             }
@@ -132,7 +136,7 @@ namespace XML.View.ViewModel
             }
             else
             {
-                List <Author> output = AuthorsList.ToList();
+                List<Author> output = AuthorsList.ToList();
                 output.Add(new Author
                 {
                     AuthorName = AuthorName,
@@ -255,7 +259,8 @@ namespace XML.View.ViewModel
             {
                 if (value == "None")
                 {
-                    AuthorIndex = AuthorName = AuthorSurname = "";
+                    AuthorName = AuthorSurname = "";
+                    AuthorIndex = "None";
                 }
                 else
                 {
@@ -277,7 +282,7 @@ namespace XML.View.ViewModel
         {
             Visibility valueToSet = Visibility.Collapsed;
             Visibility opositeValue = Visibility.Collapsed;
-            if (PublishersEnabled == Visibility.Collapsed)
+            if (ModificationsEnabled == Visibility.Collapsed)
             {
                 valueToSet = Visibility.Visible;
             }
@@ -428,7 +433,7 @@ namespace XML.View.ViewModel
         {
             Visibility valueToSet = Visibility.Collapsed;
             Visibility opositeValue = Visibility.Collapsed;
-            if (PublishersEnabled == Visibility.Collapsed)
+            if (GamesEnabled == Visibility.Collapsed)
             {
                 valueToSet = Visibility.Visible;
             }
@@ -456,8 +461,8 @@ namespace XML.View.ViewModel
                 string.IsNullOrEmpty(GameGenre) ||
                 string.IsNullOrEmpty(GamePriceCurency) ||
                 string.IsNullOrEmpty(GamePriceValue) ||
-                string.IsNullOrEmpty(GameProducerIdref) ||
-                string.IsNullOrEmpty(GamePublisherIdref) ||
+                string.IsNullOrEmpty(GameSelectedProducerId) ||
+                string.IsNullOrEmpty(GameSelectedPublisherId) ||
                 string.IsNullOrEmpty(GameStatisticsTimePlayed) ||
                 string.IsNullOrEmpty(GameStatisticsLastSessionDate) ||
                 string.IsNullOrEmpty(GameAchievementsCompleted) ||
@@ -468,7 +473,7 @@ namespace XML.View.ViewModel
             else
             {
                 var output = GamesList.ToList();
-                output.Add(new Game
+                var g = new Game
                 {
                     Image = GameImage,
                     Title = GameTitle,
@@ -478,19 +483,193 @@ namespace XML.View.ViewModel
                     Description = GameDescription,
                     GameId = GameId,
                     Genre = GameGenre,
-                    Price = new Price{Curency = GamePriceCurency, Text = GamePriceValue},
-                    ProducerId = new ProducerId{Idref = GameProducerIdref},
-                    PublisherId = new PublisherId{Idref = GamePublisherIdref},
-                    Statistics = new Statistics 
+                    Price = new Price { Curency = GamePriceCurency, Text = GamePriceValue },
+                    ProducerId = new ProducerId { Idref = GameSelectedProducerId },
+                    PublisherId = new PublisherId { Idref = GameSelectedPublisherId },
+                    Statistics = new Statistics
                     {
-                        Achievements = new Achievements { Completed = GameAchievementsCompleted, Count = GameAchievementsCount},
-                        LastSessionDate = GameStatisticsLastSessionDate, TimePlayed = gameStatisticsTimePlayed
+                        Achievements =
+                            new Achievements { Completed = GameAchievementsCompleted, Count = GameAchievementsCount },
+                        LastSessionDate = GameStatisticsLastSessionDate,
+                        TimePlayed = gameStatisticsTimePlayed
                     }
-                });
+                };
+                output.Add(g);
+
+                try
+                {
+                    ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).ProducedGames.GameId.Add(new GameId { Idref = g.GameId });
+                    ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).Publishers.PublisherId.Add(new PublisherId { Idref = g.PublisherId.Idref });
+                    PublishersList.First(publisher => publisher.PublisherId == g.ProducerId.Idref).PublishedGames.GameId.Add(new GameId { Idref = g.GameId });
+                    PublishersList.First(publisher => publisher.PublisherId == g.ProducerId.Idref).Producers.ProducerId.Add(new ProducerId { Idref = g.ProducerId.Idref });
+                }
+                catch (Exception e)
+                {
+                }
                 GamesList = new ObservableCollection<Game>(output);
                 MessageBox.Show("Game added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                RaisePropertyChanged("GameIds");
+                RaisePropertyChanged("ProducersList");
+                RaisePropertyChanged("PublishersList");
+                SelectedGameId = GameIds[0];
             }
         });
+        public RelayCommand DeleteGameCommand => new RelayCommand(() =>
+          {
+              if (SelectedGameId == "None")
+              {
+                  MessageBox.Show("Select Index of Game you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                  return;
+              }
+              for (var index = 0; index < GamesList.Count; index++)
+              {
+                  if (GamesList[index].GameId == SelectedGameId)
+                  {
+                      List<Game> output = GamesList.ToList();
+                      var g = output[index];
+                      output.RemoveAt(index);
+
+                      try
+                      {
+                          ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).ProducedGames
+                                  .GameId =
+                              ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).ProducedGames
+                                  .GameId.Where(id => id.Idref != g.GameId).ToList();
+
+                          ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).Publishers
+                                  .PublisherId =
+                              ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).Publishers
+                                  .PublisherId.Where(id => id.Idref != g.PublisherId.Idref).ToList();
+
+
+                          PublishersList.First(publisher => publisher.PublisherId == g.PublisherId.Idref)
+                              .PublishedGames
+                              .GameId = PublishersList.First(publisher => publisher.PublisherId == g.PublisherId.Idref)
+                              .PublishedGames.GameId.Where(id => id.Idref != g.GameId).ToList();
+
+                          PublishersList.First(publisher => publisher.PublisherId == g.PublisherId.Idref)
+                              .Producers
+                              .ProducerId = PublishersList.First(publisher => publisher.PublisherId == g.PublisherId.Idref)
+                              .Producers.ProducerId.Where(id => id.Idref != g.ProducerId.Idref).ToList();
+                      }
+                      catch (Exception e)
+                      {
+
+                      }
+
+                      GamesList = new ObservableCollection<Game>(output);
+                      MessageBox.Show("Author deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                      RaisePropertyChanged("GameIds");
+                      RaisePropertyChanged("ProducersList");
+                      RaisePropertyChanged("PublishersList");
+                      SelectedGameId = GameIds[0];
+                      return;
+                  }
+              }
+          });
+        public RelayCommand ModifyGameCommand => new RelayCommand(() =>
+        {
+            if (SelectedGameId == "None")
+            {
+                MessageBox.Show("Select Index of game you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            for (var index = 0; index < GamesList.Count; index++)
+            {
+                if (GamesList[index].GameId == SelectedGameId)
+                {
+                    var output = GamesList.ToList();
+                    var oldG = output[index];
+
+                    try
+                    {
+                        ProducersList.First(producer => producer.ProducerId == oldG.ProducerId.Idref).ProducedGames
+                                .GameId =
+                            ProducersList.First(producer => producer.ProducerId == oldG.ProducerId.Idref).ProducedGames
+                                .GameId.Where(id => id.Idref != oldG.GameId).ToList();
+
+                        ProducersList.First(producer => producer.ProducerId == oldG.ProducerId.Idref).Publishers
+                                .PublisherId =
+                            ProducersList.First(producer => producer.ProducerId == oldG.ProducerId.Idref).Publishers
+                                .PublisherId.Where(id => id.Idref != oldG.PublisherId.Idref).ToList();
+
+
+                        PublishersList.First(publisher => publisher.PublisherId == oldG.PublisherId.Idref)
+                            .PublishedGames
+                            .GameId = PublishersList.First(publisher => publisher.PublisherId == oldG.PublisherId.Idref)
+                            .PublishedGames.GameId.Where(id => id.Idref != oldG.GameId).ToList();
+
+                        PublishersList.First(publisher => publisher.PublisherId == oldG.PublisherId.Idref)
+                            .Producers
+                            .ProducerId = PublishersList.First(publisher => publisher.PublisherId == oldG.PublisherId.Idref)
+                            .Producers.ProducerId.Where(id => id.Idref != oldG.ProducerId.Idref).ToList();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                    var g = new Game
+                    {
+                        Image = GameImage,
+                        Title = GameTitle,
+                        ProductKey = GameProductKey,
+                        AgeRating = GameAgeRating,
+                        ReleaseDate = GameReleaseDate,
+                        Description = GameDescription,
+                        GameId = this.GameId,
+                        Genre = GameGenre,
+                        Price = new Price
+                        {
+                            Curency = GamePriceCurency,
+                            Text = GamePriceValue
+                        },
+                        ProducerId = new ProducerId { Idref = GameSelectedProducerId },
+                        PublisherId = new PublisherId { Idref = GameSelectedPublisherId },
+                        Statistics = new Statistics
+                        {
+                            Achievements = new Achievements
+                            {
+                                Count = GameAchievementsCount,
+                                Completed = GameAchievementsCompleted
+                            },
+                            LastSessionDate = GameStatisticsLastSessionDate,
+                            TimePlayed = GameStatisticsTimePlayed
+                        }
+                    };
+                    output[index] = g;
+                    try
+                    {
+                        ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).ProducedGames.GameId.Add(new GameId { Idref = g.GameId });
+                        ProducersList.First(producer => producer.ProducerId == g.ProducerId.Idref).Publishers.PublisherId.Add(new PublisherId{Idref = g.PublisherId.Idref});
+                        PublishersList.First(publisher => publisher.PublisherId == g.ProducerId.Idref).PublishedGames.GameId.Add(new GameId { Idref = g.GameId });
+                        PublishersList.First(publisher => publisher.PublisherId == g.ProducerId.Idref).Producers.ProducerId.Add(new ProducerId{ Idref = g.ProducerId.Idref});
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    GamesList = new ObservableCollection<Game>(output);
+                    MessageBox.Show("Author Modified successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RaisePropertyChanged("GameIds");
+                    RaisePropertyChanged("ProducersList");
+                    RaisePropertyChanged("PublishersList");
+                    SelectedGameId = GameIds[0];
+                    return;
+                }
+            }
+        });
+
+        private string gameId;
+        public string GameId
+        {
+            get => gameId;
+            set
+            {
+                gameId = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private string gameImage;
         public string GameImage
@@ -579,7 +758,7 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
-        
+
         private string gameGenre;
         public string GameGenre
         {
@@ -590,7 +769,7 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
-        
+
         private string gameStatisticsTimePlayed;
         public string GameStatisticsTimePlayed
         {
@@ -639,7 +818,7 @@ namespace XML.View.ViewModel
         {
             get
             {
-                var output = new List<string> {"None"};
+                var output = new List<string> { "None" };
                 output.AddRange(gameLibrary.GameList.Game.Select(game => game.GameId));
                 return output.ToArray();
             }
@@ -649,13 +828,14 @@ namespace XML.View.ViewModel
         public string SelectedGameId
         {
             get { return selectedGameId; }
-            set {
+            set
+            {
                 if (value == "None")
                 {
-                    GameImage = GameTitle = GameProductKey = GameAgeRating = GameReleaseDate = GameDescription =
-                        GameId = GameGenre = GamePriceCurency = GamePriceValue = GameProducerIdref =
-                            GamePublisherIdref = GameStatisticsTimePlayed = GameStatisticsLastSessionDate =
-                                GameAchievementsCompleted = GameAchievementsCount = "";
+                    GameImage = GameTitle = GameProductKey = GameAgeRating = GameReleaseDate =
+                        GameDescription = GameGenre = GamePriceCurency = GamePriceValue = GameStatisticsTimePlayed =
+                            GameStatisticsLastSessionDate = GameAchievementsCompleted = GameAchievementsCount = "";
+                    GameSelectedProducerId = GameSelectedPublisherId = GameId = "None";
                 }
                 else
                 {
@@ -670,68 +850,37 @@ namespace XML.View.ViewModel
                     GameGenre = g.Genre;
                     GamePriceCurency = g.Price.Curency;
                     GamePriceValue = g.Price.Text;
-                    GameProducerIdref = g.ProducerId.Idref;
-                    GamePublisherIdref = g.PublisherId.Idref;
+                    GameSelectedProducerId = g.ProducerId.Idref;
+                    GameSelectedPublisherId = g.PublisherId.Idref;
                     GameStatisticsTimePlayed = g.Statistics.TimePlayed;
                     GameStatisticsLastSessionDate = g.Statistics.LastSessionDate;
                     GameAchievementsCompleted = g.Statistics.Achievements.Completed;
                     GameAchievementsCount = g.Statistics.Achievements.Count;
-                    
+
                 }
                 selectedGameId = value;
                 RaisePropertyChanged();
             }
         }
 
-        public string[] ProducerIds
+        private string gameSelectedProducerId;
+        public string GameSelectedProducerId
         {
-            get
-            {
-                var output = new List<string> { "None" };
-                output.AddRange(gameLibrary.ProducerList.Producer.Select(producer => producer.ProducerId));
-                return output.ToArray();
-            }
-        }
-
-        public string[] PublisherIds
-        {
-            get
-            {
-                var output = new List<string> { "None" };
-                output.AddRange(gameLibrary.PublisherList.Publisher.Select(publisher => publisher.PublisherId));
-                return output.ToArray();
-            }
-        }
-
-        private string gameProducerIdref;
-        public string GameProducerIdref
-        {
-            get => gameProducerIdref;
+            get { return gameSelectedProducerId; }
             set
             {
-                gameProducerIdref = value;
+                gameSelectedProducerId = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string gamePublisherIdref;
-        public string GamePublisherIdref
+        private string gameSelectedPublisherId;
+        public string GameSelectedPublisherId
         {
-            get => gamePublisherIdref;
+            get { return gameSelectedPublisherId; }
             set
             {
-                gamePublisherIdref = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string gameId;
-        public string GameId
-        {
-            get => gameId;
-            set
-            {
-                gameId = value;
+                gameSelectedPublisherId = value;
                 RaisePropertyChanged();
             }
         }
@@ -758,7 +907,7 @@ namespace XML.View.ViewModel
         {
             Visibility valueToSet = Visibility.Collapsed;
             Visibility opositeValue = Visibility.Collapsed;
-            if (PublishersEnabled == Visibility.Collapsed)
+            if (ProducersEnabled == Visibility.Collapsed)
             {
                 valueToSet = Visibility.Visible;
             }
@@ -774,6 +923,77 @@ namespace XML.View.ViewModel
             ModificationsEnabled = opositeValue;
             AuthorsEnabled = opositeValue;
         });
+        public RelayCommand AddProducerCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(ProducerName) ||
+                string.IsNullOrEmpty(ProducerId))
+            {
+                MessageBox.Show("Missing data to add new Producer", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                var output = ProducersList.ToList();
+                output.Add(new Producer
+                {
+                    ProducerName = ProducerName,
+                    ProducerId = ProducerId,
+                    ProducedGames = new ProducedGames(),
+                    Publishers = new Publishers()
+                });
+                ProducersList = new ObservableCollection<Producer>(output);
+                MessageBox.Show("Producer added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                RaisePropertyChanged("ProducerIds");
+                SelectedProducerId = ProducerIds[0];
+            }
+        });
+        public RelayCommand DeleteProducerCommand => new RelayCommand(() =>
+        {
+            if (SelectedProducerId == "None")
+            {
+                MessageBox.Show("Select Index of producer you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            for (var index = 0; index < ProducersList.Count; index++)
+            {
+                if (ProducersList[index].ProducerId == SelectedProducerId)
+                {
+                    List<Producer> output = ProducersList.ToList();
+                    output.RemoveAt(index);
+                    ProducersList = new ObservableCollection<Producer>(output);
+                    MessageBox.Show("Producer deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RaisePropertyChanged("ProducerIds");
+                    SelectedProducerId = ProducerIds[0];
+                    return;
+                }
+            }
+        });
+        public RelayCommand ModifyProducerCommand => new RelayCommand(() =>
+        {
+            if (SelectedProducerId == "None")
+            {
+                MessageBox.Show("Select Index of Author you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            for (var index = 0; index < ProducersList.Count; index++)
+            {
+                if (ProducersList[index].ProducerId == SelectedProducerId)
+                {
+                    var output = ProducersList.ToList();
+                    output[index] = new Producer
+                    {
+                        ProducerId = ProducerId,
+                        ProducerName = ProducerName,
+                        Publishers = new Publishers(ProducerPublishers),
+                        ProducedGames = new ProducedGames(ProducedGames)
+                    };
+                    ProducersList = new ObservableCollection<Producer>(output);
+                    MessageBox.Show("Producer Modified successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RaisePropertyChanged("ProducerIds");
+                    SelectedProducerId = ProducerIds[0];
+                    return;
+                }
+            }
+        });
 
         private string producerName;
         public string ProducerName
@@ -786,13 +1006,13 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string producersId;
-        public string ProducersId
+        private string producerId;
+        public string ProducerId
         {
-            get => producersId;
+            get => producerId;
             set
             {
-                producersId = value;
+                producerId = value;
                 RaisePropertyChanged();
             }
         }
@@ -808,40 +1028,51 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string publishers;
-        public string Publishers
+        private string producerPublishers;
+
+        public string ProducerPublishers
         {
-            get => publishers;
+            get { return producerPublishers; }
             set
             {
-                publishers = value;
+                producerPublishers = value;
                 RaisePropertyChanged();
             }
         }
 
-        public RelayCommand AddProducerCommand => new RelayCommand(() =>
+        public string[] ProducerIds
         {
-            if (string.IsNullOrEmpty(ProducerName) ||
-                string.IsNullOrEmpty(ProducersId) ||
-                string.IsNullOrEmpty(ProducedGames) ||
-                string.IsNullOrEmpty(ProducersId))
+            get
             {
-                MessageBox.Show("Missing data to add new Producer", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                var output = new List<string> { "None" };
+                output.AddRange(gameLibrary.ProducerList.Producer.Select(producer => producer.ProducerId));
+                return output.ToArray();
             }
-            else
+        }
+
+        private string selectedProducerId;
+        public string SelectedProducerId
+        {
+            get { return selectedProducerId; }
+            set
             {
-                var output = ProducersList.ToList();
-                output.Add(new Producer
+                if (value == "None")
                 {
-                    ProducerName = ProducerName,
-                    ProducerId = ProducersId,
-                    ProducedGames = new ProducedGames(),
-                    Publishers = new Publishers()
-                });
-                ProducersList = new ObservableCollection<Producer>(output);
-                MessageBox.Show("Producer added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ProducerName = ProducedGames = ProducerPublishers = "";
+                    ProducerId = "None";
+                }
+                else
+                {
+                    Producer p = ProducersList.First(producer => producer.ProducerId == value);
+                    ProducerId = p.ProducerId;
+                    ProducerName = p.ProducerName;
+                    ProducerPublishers = p.Publishers.ToString();
+                    ProducedGames = p.ProducedGames.ToString();
+                }
+                selectedProducerId = value;
+                RaisePropertyChanged();
             }
-        });
+        }
 
         public Visibility ProducersEnabled
         {
@@ -879,6 +1110,78 @@ namespace XML.View.ViewModel
             ModificationsEnabled = opositeValue;
             AuthorsEnabled = opositeValue;
         });
+        public RelayCommand AddPublisherCommand => new RelayCommand(() =>
+        {
+            if (string.IsNullOrEmpty(PublisherName) ||
+                string.IsNullOrEmpty(PublisherId))
+            {
+                MessageBox.Show("Missing data to add new Publisher", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                var output = PublishersList.ToList();
+                output.Add(new Publisher
+                {
+                    PublisherName = PublisherName,
+                    PublisherId = PublisherId,
+                    PublishedGames = new PublishedGames(),
+                    Producers = new Producers()
+                });
+                PublishersList = new ObservableCollection<Publisher>(output);
+                MessageBox.Show("Publisher added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                RaisePropertyChanged("PublisherIds");
+                SelectedPublisherId = PublisherIds[0];
+            }
+        });
+        public RelayCommand DeletePublisherCommand => new RelayCommand(() =>
+        {
+            if (SelectedPublisherId == "None")
+            {
+                MessageBox.Show("Select Index of Publisher you want to delete.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            for (var index = 0; index < PublishersList.Count; index++)
+            {
+                if (PublishersList[index].PublisherId == SelectedPublisherId)
+                {
+                    List<Publisher> output = PublishersList.ToList();
+                    output.RemoveAt(index);
+                    PublishersList = new ObservableCollection<Publisher>(output);
+                    MessageBox.Show("Publisher deleted successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RaisePropertyChanged("PublisherIds");
+                    SelectedPublisherId = PublisherIds[0];
+                    return;
+                }
+            }
+        });
+        public RelayCommand ModifyPublisherCommand => new RelayCommand(() =>
+        {
+            if (SelectedPublisherId == "None")
+            {
+                MessageBox.Show("Select Index of Author you want to modify.", "Alert", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            for (var index = 0; index < PublishersList.Count; index++)
+            {
+                if (PublishersList[index].PublisherId == SelectedPublisherId)
+                {
+                    var output = PublishersList.ToList();
+                    output[index] = new Publisher
+                    {
+                        PublisherId = SelectedPublisherId,
+                        PublisherName = PublisherName,
+                        Producers = new Producers(PublisherProducers),
+                        PublishedGames = new PublishedGames(PublishedGames)
+                    };
+                    PublishersList = new ObservableCollection<Publisher>(output);
+                    MessageBox.Show("Producer Modified successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    RaisePropertyChanged("PublisherIds");
+                    SelectedPublisherId = PublisherIds[0];
+                    return;
+                }
+            }
+        });
+        
 
         private string publisherName;
         public string PublisherName
@@ -891,17 +1194,16 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string publishersId;
-        public string PublishersId
+        public string PublisherId
         {
-            get => publishersId;
+            get { return publisherId; }
             set
             {
-                publishersId = value;
+                publisherId = value; 
                 RaisePropertyChanged();
             }
         }
-
+        
         private string publishedGames;
         public string PublishedGames
         {
@@ -913,40 +1215,53 @@ namespace XML.View.ViewModel
             }
         }
 
-        private string producers;
-        public string Producers
+        private string publisherProducers;
+
+        public string PublisherProducers
         {
-            get => producers;
+            get => publisherProducers;
             set
             {
-                producers = value;
+                publisherProducers = value;
                 RaisePropertyChanged();
             }
         }
 
-        public RelayCommand AddPublisherCommand => new RelayCommand(() =>
+        public string[] PublisherIds
         {
-            if (string.IsNullOrEmpty(PublisherName) ||
-                string.IsNullOrEmpty(PublishersId) ||
-                string.IsNullOrEmpty(PublishedGames) ||
-                string.IsNullOrEmpty(Producers))
+            get
             {
-                MessageBox.Show("Missing data to add new Publisher", "Modification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                var output = new List<string> { "None" };
+                output.AddRange(gameLibrary.PublisherList.Publisher.Select(publisher => publisher.PublisherId));
+                return output.ToArray();
             }
-            else
+        }
+
+        private string selectedPublisherId;
+        private string publisherId;
+
+        public string SelectedPublisherId
+        {
+            get { return selectedPublisherId; }
+            set
             {
-                var output = PublishersList.ToList();
-                output.Add(new Publisher
+                if (value == "None")
                 {
-                    PublisherName = PublisherName,
-                    PublisherId = PublishersId,
-                    PublishedGames = new PublishedGames(),
-                    Producers = new Producers()
-                });
-                PublishersList = new ObservableCollection<Publisher>(output);
-                MessageBox.Show("Publisher added successfuly", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    PublisherName = PublishedGames = PublisherProducers = "";
+                    PublisherId = "None";
+                }
+                else
+                {
+                    Publisher p = PublishersList.First(publisher => publisher.PublisherId == value);
+                    PublisherId = p.PublisherId;
+                    PublisherName = p.PublisherName;
+                    PublisherProducers = p.Producers.ToString();
+                    PublishedGames = p.PublishedGames.ToString();
+                }
+                selectedPublisherId = value; 
+                RaisePropertyChanged();
             }
-        });
+        }
 
         public Visibility PublishersEnabled
         {
@@ -957,18 +1272,8 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-
+        
         #endregion
 
-    }
-
-    public enum XmlType
-    {
-        Author,
-        Modification,
-        Game,
-        Producer,
-        Publisher
     }
 }
