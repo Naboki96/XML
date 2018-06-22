@@ -95,14 +95,8 @@
                     Visibility="{Binding ModificationsEnabled}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                         Margin="0,0,0,5">
-                <Button Content="Add Author" Command="{Binding AddModificationCommand}"
+                <Button Content="Add Modification" Command="{Binding AddModificationCommand}"
                         Margin="0,0,5,0" Height="30"
-                        FontSize="15"/>
-                <Button Content="Delete Author" Command="{Binding DeleteModificationCommand}"
-                        Margin="5,0,5,0" Height="30"
-                        FontSize="15"/>
-                <Button Content="Modify Author" Command="{Binding ModifyModificationCommand}"
-                        Margin="5,0" Height="30"
                         FontSize="15"/>
             </StackPanel>
 
@@ -110,19 +104,24 @@
                         Margin="0,0,0,5">
                 <TextBlock Text="Date: " Height="30" Margin="0,0,2.5,0" ToolTip="YYYY-MM-DD"
                            FontSize="15"/>
-                <TextBox Text="{Binding ModificationDate, Mode=TwoWay}" ToolTip="YYYY-MM-DD" Height="30"
-                         FontSize="15" Width="100" Margin="0,0,5,0"/>
-                <TextBlock Text="Name: " Height="30" Margin="0,0,2.5,0"
+                <Border BorderBrush="Gray" BorderThickness="1">
+                    <TextBlock Text="{Binding ModificationDate}"  ToolTip="YYYY-MM-DD" Height="30"
+                             FontSize="15" Width="100" />
+                </Border>
+                <TextBlock Text="Index: " Height="30" Margin="5,0,2.5,0"
                            FontSize="15"/>
-                <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding SelectedAuthorIndex}"
+                <ComboBox ItemsSource="{Binding Indexes, UpdateSourceTrigger=LostFocus}" SelectedItem="{Binding AuthorId}"
                           Height="30" FontSize="15"/>
-                <TextBlock Text="Surname: " Height="30" Margin="0,0,2.5,0"
-                           FontSize="15" />
-                <TextBox Text="{Binding Note, Mode=TwoWay}" Height="30"
-                         FontSize="15" Width="100" Margin="0,0,5,0"/>
             </StackPanel>
 
-            <ListView ItemsSource="{Binding AuthorsList, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Note: " Height="30" Margin="0,0,2.5,0"
+                       FontSize="15" />
+
+            <TextBox Text="{Binding Note, Mode=TwoWay}" Height="60" HorizontalAlignment="Left"
+                     FontSize="15" Width="674"
+                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+            <ListView ItemsSource="{Binding Modifications, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
     </Grid>
