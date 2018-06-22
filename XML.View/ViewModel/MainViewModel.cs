@@ -75,6 +75,9 @@ namespace XML.View.ViewModel
         {
             Deserialize.Execute(null);
             SelectedAuthorIndex = Indexes[0];
+
+            AuthorsEnabled = GamesEnabled =
+                ModificationsEnabled = ProducersEnabled = PublishersEnabled = Visibility.Collapsed;
         }
 
         public RelayCommand Deserialize => new RelayCommand(() =>
@@ -576,18 +579,7 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-        private string gameId;
-        public string GameId
-        {
-            get => gameId;
-            set
-            {
-                gameId = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        
         private string gameGenre;
         public string GameGenre
         {
@@ -598,29 +590,7 @@ namespace XML.View.ViewModel
                 RaisePropertyChanged();
             }
         }
-
-        private string gameProducerIdref;
-        public string GameProducerIdref
-        {
-            get => gameProducerIdref;
-            set
-            {
-                gameProducerIdref = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string gamePublisherIdref;
-        public string GamePublisherIdref
-        {
-            get => gamePublisherIdref;
-            set
-            {
-                gamePublisherIdref = value;
-                RaisePropertyChanged();
-            }
-        }
-
+        
         private string gameStatisticsTimePlayed;
         public string GameStatisticsTimePlayed
         {
@@ -661,6 +631,107 @@ namespace XML.View.ViewModel
             set
             {
                 gameAchievementsCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string[] GameIds
+        {
+            get
+            {
+                var output = new List<string> {"None"};
+                output.AddRange(gameLibrary.GameList.Game.Select(game => game.GameId));
+                return output.ToArray();
+            }
+        }
+
+        private string selectedGameId;
+        public string SelectedGameId
+        {
+            get { return selectedGameId; }
+            set {
+                if (value == "None")
+                {
+                    GameImage = GameTitle = GameProductKey = GameAgeRating = GameReleaseDate = GameDescription =
+                        GameId = GameGenre = GamePriceCurency = GamePriceValue = GameProducerIdref =
+                            GamePublisherIdref = GameStatisticsTimePlayed = GameStatisticsLastSessionDate =
+                                GameAchievementsCompleted = GameAchievementsCount = "";
+                }
+                else
+                {
+                    Game g = GamesList.First(game => game.GameId == value);
+                    GameImage = g.Image;
+                    GameTitle = g.Title;
+                    GameProductKey = g.ProductKey;
+                    GameAgeRating = g.AgeRating;
+                    GameReleaseDate = g.ReleaseDate;
+                    GameDescription = g.Description;
+                    GameId = g.GameId;
+                    GameGenre = g.Genre;
+                    GamePriceCurency = g.Price.Curency;
+                    GamePriceValue = g.Price.Text;
+                    GameProducerIdref = g.ProducerId.Idref;
+                    GamePublisherIdref = g.PublisherId.Idref;
+                    GameStatisticsTimePlayed = g.Statistics.TimePlayed;
+                    GameStatisticsLastSessionDate = g.Statistics.LastSessionDate;
+                    GameAchievementsCompleted = g.Statistics.Achievements.Completed;
+                    GameAchievementsCount = g.Statistics.Achievements.Count;
+                    
+                }
+                selectedGameId = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string[] ProducerIds
+        {
+            get
+            {
+                var output = new List<string> { "None" };
+                output.AddRange(gameLibrary.ProducerList.Producer.Select(producer => producer.ProducerId));
+                return output.ToArray();
+            }
+        }
+
+        public string[] PublisherIds
+        {
+            get
+            {
+                var output = new List<string> { "None" };
+                output.AddRange(gameLibrary.PublisherList.Publisher.Select(publisher => publisher.PublisherId));
+                return output.ToArray();
+            }
+        }
+
+        private string gameProducerIdref;
+        public string GameProducerIdref
+        {
+            get => gameProducerIdref;
+            set
+            {
+                gameProducerIdref = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string gamePublisherIdref;
+        public string GamePublisherIdref
+        {
+            get => gamePublisherIdref;
+            set
+            {
+                gamePublisherIdref = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string gameId;
+        public string GameId
+        {
+            get => gameId;
+            set
+            {
+                gameId = value;
                 RaisePropertyChanged();
             }
         }
